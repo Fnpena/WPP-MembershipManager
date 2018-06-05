@@ -33,22 +33,31 @@
 
     function gi2m_install()
     {
-        //Install Database Schema y Plugins Variables and Components    
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-	  
-        $default_options=array(
-        'plugin_version'=>'1.0',
-        'db_version'=>'1.0');
+        require_once( ABSPATH . 'wp-content/plugins/GI_MembershipManager/helpers/gi2m_functions.php' );
+        
+        //Define Current Version for plugin and database
+        $default_options=array('plugin_version'=>'1.0','db_version'=>'1.0');
 
+        //Verify If Exist Prior Version of the component
         $current_options = get_option('wpp_gi2m_options');
+        
+        //If not exist previous version create save de current options instead
         if($current_options == '' || $current_options == null)
         {
             add_option('wpp_gi2m_options',$default_options);
+            //Call Update Function 
+            updatePluginDataBase();
         }
-        else{}
-
-        //Next Add Database Script
-        //Next Add Validate db-version to update if is required
+        else
+        {
+            //Check if the current db version and the installed db version are different
+            if(checkPluginDataBase($default_options['db_version'],$current_options['db_version']))
+            {
+                //If that is true call update function and update the installed db version number
+                updatePluginDataBase();
+                update_option( 'wpp_gi2m_options', $default_options );
+            }
+        }
     }
 
     function gi2m_deactivation()

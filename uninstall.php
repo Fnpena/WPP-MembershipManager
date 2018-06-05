@@ -14,14 +14,15 @@ function gi2m_remove_components()
 
 function gi2m_remove_variable() 
 {
-    $option_name = 'variable_name';
+    $option_name = 'wpp_gi2m_options';
     delete_option($option_name);
 }
 
 function gi2m_remove_database() 
 {
     global $wpdb;
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}table_name"); 
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}gi2m_master_catalog"); 
+    $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}gi2m_members"); 
 }
 
 
