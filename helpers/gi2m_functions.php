@@ -1,7 +1,5 @@
 <?php 
 
-global $wpdb;
-
 function checkPluginDataBase($db_version,$installed_version)
 {  		
       if ( $installed_version != $db_version ) 
@@ -16,6 +14,7 @@ function checkPluginDataBase($db_version,$installed_version)
 
 function updatePluginDataBase()
 {
+	  global $wpdb;
       require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	  $charset_collate = $wpdb->get_charset_collate();   
     
@@ -75,6 +74,14 @@ function updatePluginDataBase()
     
     $result = maybe_create_table($table_name, $sql); 
 
+}
+
+function memberPreRegistration($user_id)
+{
+	global $wpdb;
+	$sql = "INSERT INTO {$wpdb->prefix}gi2m_members (`profile_id`,`member_status`,`member_type`) VALUES ({$user_id},'00','1')";
+	$wpdb->query($sql);
+	echo "HOLA";
 }
 
 ?>

@@ -10,7 +10,7 @@
     Domain Path: /lang/
     */
     
-    //require_once plugin_dir_path(__FILE__). '/resources/helpers.php';
+	require_once( ABSPATH . 'wp-content/plugins/GI_MembershipManager/helpers/gi2m_functions.php' );
 
     /*---------------------------------------------------------------
                             Call-up Hook
@@ -26,15 +26,13 @@
 
     add_shortcode('gi2m-members-view','gi2m_displayMemberDirectory');
     add_shortcode('gi2m-profile-view','gi2m_displayMemberProfile');
-    
+	
     /*---------------------------------------------------------------
                         Call-up Hook Functions
     -----------------------------------------------------------------*/
 
     function gi2m_install()
     {
-        require_once( ABSPATH . 'wp-content/plugins/GI_MembershipManager/helpers/gi2m_functions.php' );
-        
         //Define Current Version for plugin and database
         $default_options=array('plugin_version'=>'1.0','db_version'=>'1.0');
 
@@ -69,6 +67,16 @@
                             Action Functions
     -----------------------------------------------------------------*/
 
+	if(! function_exists('gi2m_memberPreRegistration'))
+	{
+		add_action('user_register','gi2m_memberPreRegistration');
+		
+		function gi2m_memberPreRegistration($user_id)
+		{
+			memberPreRegistration($user_id);
+		}
+	}
+	
     if(! function_exists('gi2m_build_menu'))
     {
 
