@@ -78,18 +78,9 @@ function updatePluginDataBase()
 
 function memberPreRegistration($user_id)
 {
-	$new_user = get_user_by('id',$user_id);
-	if(isset($new_user))
-	{
-		$user_role = $new_user->roles;
-		if($user_role[0] == 'subscriber')
-		{
-			global $wpdb;
-			$sql = "INSERT INTO {$wpdb->prefix}gi2m_members (`profile_id`,`firstname`,`lasttname`,`member_status`,`member_type`) 
-			             VALUES ({$user_id},{$new_user->first_name},{$new_user->last_name},'00','1')";
-			$wpdb->query($sql);
-		}
-	}
+	global $wpdb;
+	$sql = "INSERT INTO {$wpdb->prefix}gi2m_members (`profile_id`,`member_status`,`member_type`) VALUES ({$user_id},'00','1')";
+	$wpdb->query($sql);
 }
 
 ?>
