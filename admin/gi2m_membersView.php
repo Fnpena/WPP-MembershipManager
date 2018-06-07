@@ -33,7 +33,7 @@ class Members_ListTable extends WP_List_Table
 				  FROM {$wpdb->prefix}gi2m_members";
 
 		if ( isset( $_POST['s'] ) ) {
-			$sql .= " WHERE firstname LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
+			$sql .= " WHERE firstname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR lastname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR suitability_number LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
 		}
 		
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
