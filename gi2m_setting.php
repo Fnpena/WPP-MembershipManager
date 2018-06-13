@@ -23,11 +23,11 @@
     register_deactivation_hook(__FILE__,'gi2m_deactivation');
 
     /*---------------------------------------------------------------
-                                ShortCode
+                                ShortCode : TODO Eliminar ShortCode
     -----------------------------------------------------------------*/
 
-    add_shortcode('gi2m-members-view','gi2m_displayMemberDirectory');
-    add_shortcode('gi2m-profile-view','gi2m_displayMemberProfile');
+    // add_shortcode('gi2m-members-view','gi2m_displayMemberDirectory');
+    // add_shortcode('gi2m-profile-view','gi2m_displayMemberProfile');
 	
     /*---------------------------------------------------------------
                         Call-up Hook Functions
@@ -68,16 +68,6 @@
     /*---------------------------------------------------------------
                             Action Functions
     -----------------------------------------------------------------*/
-
-	// if(! function_exists('gi2m_memberPreRegistration'))
-	// {
-		// add_action('user_register','gi2m_memberPreRegistration');
-		
-		// function gi2m_memberPreRegistration($user_id)
-		// {
-			// memberPreRegistration($user_id);
-		// }
-	// }
 	
     if(! function_exists('gi2m_build_menu'))
     {
@@ -86,34 +76,24 @@
 
         function gi2m_build_menu()
         {
-            add_menu_page('WP Membership Manager'
-                        , 'Membership Manager'
+            add_menu_page('My Course Log'
+                        , 'My Course Log'
                         ,0
                         , 'gi2m-release-note'
                         ,'gi2m_display_releasenotes');
             
-            ///Validate the acitive user privilege to display the menu
+            ///Validate the active user privilege to display the menu
             if(current_user_can('administrator'))
             {
                 //Add Sub-Menu Page
                 add_submenu_page('gi2m-release-note', 
-                                 'Members', 
-                                 'Members',
+                                 'Search', 
+                                 'Search',
                                  1, 
-                                 'gi2m-members', 
-                                 'gi2m_displayMembers');	
+                                 'gi2m-search-course', 
+                                 'gi2m_displayResults');	
    
             }
-            else
-            {
-                add_submenu_page('gi2m-release-note', 
-                                 'Member Profile', 
-                                 'Member Profile',
-                                 0,
-                                 'gi2m-member-info', 
-                                 'gi2m_displayMemberInfo');
-            }
-            
         }
         
     }
@@ -128,50 +108,58 @@
             include('release-note/gi2m_release_note.php');
         }
     }
-
-    if(! function_exists('gi2m_displayMemberInfo'))
+	
+	if(! function_exists('gi2m_displayResults'))
     {    
-        /*
-            Funtion: gi2m_displayMemberInfo
-            Description: display current member profile information in admin view
-          */
-        function gi2m_displayMemberInfo()
+        function gi2m_displayResults()
         {
-            include('admin/gi2m_profileView.php');
+            include('admin/gi2m_searchView.php');
         }
     }
 
-    if(! function_exists('gi2m_displayMembers'))
-    {    
-        /*
-            Funtion: gi2m_displayMembers
-            Description: display all members profile information in admin view
-          */
-        function gi2m_displayMembers()
-        {
-            include('admin/gi2m_membersView.php');
-        }
-    }
+    // if(! function_exists('gi2m_displayMemberInfo'))
+    // {    
+        // /*
+            // Funtion: gi2m_displayMemberInfo
+            // Description: display current member profile information in admin view
+          // */
+        // function gi2m_displayMemberInfo()
+        // {
+            // include('admin/gi2m_profileView.php');
+        // }
+    // }
 
-    if(! function_exists('gi2m_displayMemberDirectory'))
-    {    /*
-            Funtion: gi2m_displayMemberDirectory
-            Description: display all members profile information in one shortcode
-          */
-        function gi2m_displayMemberDirectory()
-        {
-            include('public/gi2m_membersView.php');
-        }
-    }
+    // if(! function_exists('gi2m_displayMembers'))
+    // {    
+        // /*
+            // Funtion: gi2m_displayMembers
+            // Description: display all members profile information in admin view
+          // */
+        // function gi2m_displayMembers()
+        // {
+            // include('admin/gi2m_membersView.php');
+        // }
+    // }
 
-    if(! function_exists('gi2m_displayMemberProfile'))
-    {    /*
-            Funtion: gi2m_displayMemberProfile
-            Description: display one member profile on-demand in one shortcode
-          */
-        function gi2m_displayMemberProfile()
-        {
-            include('public/gi2m_profileView.php');
-        }
-    }
+    // if(! function_exists('gi2m_displayMemberDirectory'))
+    // {    /*
+            // Funtion: gi2m_displayMemberDirectory
+            // Description: display all members profile information in one shortcode
+          // */
+        // function gi2m_displayMemberDirectory()
+        // {
+            // include('public/gi2m_membersView.php');
+        // }
+    // }
+
+    // if(! function_exists('gi2m_displayMemberProfile'))
+    // {    /*
+            // Funtion: gi2m_displayMemberProfile
+            // Description: display one member profile on-demand in one shortcode
+          // */
+        // function gi2m_displayMemberProfile()
+        // {
+            // include('public/gi2m_profileView.php');
+        // }
+    // }
 ?>
