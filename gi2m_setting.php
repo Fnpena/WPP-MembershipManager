@@ -1,12 +1,14 @@
 <?php 
     /*
-    Plugin Name: Membership Manager
+    Plugin Name: GI2M MyCourseLog
     Plugin URI: http://www.b4aconsulting.com/ghetto-interactive
-    Description: undercontruction
+    Description: This plugin is a record the all courses taken by one member. 
+	             additional let you search all course that one member has taken 
+				 or all members that has taken some course in particular
     Version: 1.0
     Author: Ghetto Interative Lab
     Author URI: http://www.b4aconsulting.com/ghetto-interactive
-    Text Domain: GI_MembershipManager
+    Text Domain: GI_MyCourseLog
     Domain Path: /lang/
     */
     
@@ -67,15 +69,15 @@
                             Action Functions
     -----------------------------------------------------------------*/
 
-	if(! function_exists('gi2m_memberPreRegistration'))
-	{
-		add_action('user_register','gi2m_memberPreRegistration');
+	// if(! function_exists('gi2m_memberPreRegistration'))
+	// {
+		// add_action('user_register','gi2m_memberPreRegistration');
 		
-		function gi2m_memberPreRegistration($user_id)
-		{
-			memberPreRegistration($user_id);
-		}
-	}
+		// function gi2m_memberPreRegistration($user_id)
+		// {
+			// memberPreRegistration($user_id);
+		// }
+	// }
 	
     if(! function_exists('gi2m_build_menu'))
     {
