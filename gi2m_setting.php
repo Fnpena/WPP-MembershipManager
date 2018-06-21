@@ -25,6 +25,12 @@
 
     //add_shortcode('gi2m-members-view','gi2m_displayMemberDirectory');
 	
+	/*---------------------------------------------------------------
+                          Script & Style Hook
+    -----------------------------------------------------------------*/
+
+    add_action('admin_enqueue_scripts','gims_loadReferences');
+	
     /*---------------------------------------------------------------
                         Call-up Hook Functions
     -----------------------------------------------------------------*/
@@ -65,9 +71,29 @@
                             Action Functions
     -----------------------------------------------------------------*/
 
+	if(! function_exists('gims_loadReferences'))
+    {
+		function gims_loadReferences($page_name)
+		{
+			if($page_name != 'toplevel_page_gi2m-membersx')
+			{ return;}
+		}
+		
+		wp_enqueue_style('my-admin-style',
+						  plugins_url('\admin\css\style.css',__FILE__),
+						  [],
+						  false,
+						  'all');
+						  
+		wp_enqueue_script('my-admin-script',
+						  plugins_url('\admin\js\script.js',__FILE__),
+						  [],
+						  false,
+						  true);						 
+	}
+	
     if(! function_exists('gi2m_build_menu'))
     {
-
         add_action('admin_menu', 'gi2m_build_menu');
 
         function gi2m_build_menu()
