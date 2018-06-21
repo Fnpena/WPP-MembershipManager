@@ -14,7 +14,7 @@ function gi2m_remove_components()
 
 function gi2m_remove_variable() 
 {
-    $option_name = 'wpp_gi2m_options';
+    $option_name = 'wpp_gims_options';
     delete_option($option_name);
 }
 

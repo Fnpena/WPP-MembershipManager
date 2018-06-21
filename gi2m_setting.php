@@ -10,14 +10,13 @@
     Domain Path: /lang/
     */
     
-	require_once( ABSPATH . 'wp-content/plugins/GI_MembershipStatus/helpers/gi2m_functions.php' );
+	require_once( ABSPATH . 'wp-content/plugins/GI_MyMembershipStatus/helpers/gi2m_functions.php' );
 
     /*---------------------------------------------------------------
                             Call-up Hook
     -----------------------------------------------------------------*/
 
     register_activation_hook(__FILE__,'gi2m_install');
-
     register_deactivation_hook(__FILE__,'gi2m_deactivation');
 
     /*---------------------------------------------------------------
@@ -36,12 +35,12 @@
         $default_options=array('plugin_version'=>'1.0','db_version'=>'1.0');
 
         //Verify If Exist Prior Version of the component
-        $current_options = get_option('wpp_gi2m_options');
+        $current_options = get_option('wpp_gims_options');
         
         //If not exist previous version create save de current options instead
         if($current_options == '' || $current_options == null)
         {
-            add_option('wpp_gi2m_options',$default_options);
+            add_option('wpp_gims_options',$default_options);
             //Call Update Function 
             updatePluginDataBase();
         }
@@ -52,7 +51,7 @@
             {
                 //If that is true call update function and update the installed db version number
                 updatePluginDataBase();
-                update_option( 'wpp_gi2m_options', $default_options );
+                update_option( 'wpp_gims_options', $default_options );
             }
         }
     }
@@ -84,8 +83,8 @@
             {
                 //Add Sub-Menu Page
                 add_submenu_page('gi2m-release-note', 
-                                 'Members', 
-                                 'Members',
+                                 'Membership List', 
+                                 'Membership List',
                                  1, 
                                  'gi2m-members', 
                                  'gi2m_displayMembers');	

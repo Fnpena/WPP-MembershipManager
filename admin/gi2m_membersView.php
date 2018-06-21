@@ -16,24 +16,26 @@ class Members_ListTable extends WP_List_Table
 	 *
 	 * @return mixed
 	 */
-	public static function get_members( $per_page = 2, $page_number = 1 ) {
+	public static function get_members( $per_page = 25, $page_number = 1 ) {
 
 		global $wpdb;
+		
+		$sql = "SELECT personal_id,
+ 					   membership,
+					   firstname,		  
+					   lastname,
+					   status
+				  FROM {$wpdb->prefix}gi2m_membership_status";
 
-		$sql = "SELECT suitability_number,
- 					   firstname,
-					   lastname,		  
-					   email_address,
-					   primary_contact,
-					   sectional,
-					   member_status,
-					   initial_date,
-					   last_update,
-					   unique_guid 
-				  FROM {$wpdb->prefix}gi2m_members";
-
-		if ( isset( $_POST['s'] ) ) {
-			$sql .= " WHERE firstname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR lastname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR suitability_number LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
+		if ( isset( $_POST['s'] ) ) 
+		{
+			$sql .= " WHERE firstname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR lastname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR personal_id LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
+		}
+		
+		//Aditional validation search parameter from QR
+		if(isset($_REQUEST['ss']))
+		{
+			$sql .= " WHERE personal_id LIKE '%" . esc_sql( $_REQUEST['ss'] ). "%' ";
 		}
 		
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
@@ -58,7 +60,7 @@ class Members_ListTable extends WP_List_Table
 	public static function record_count() 
 	{
 		global $wpdb;
-		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}gi2m_members";
+		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}gi2m_membership_status";
 		return $wpdb->get_var( $sql );
 	}
 
@@ -75,10 +77,10 @@ class Members_ListTable extends WP_List_Table
 	 */
 	public function get_sortable_columns() {
 		$sortable_columns = array(
-			'suitability_number' => array( 'suitability_number', true ),
+			'personal_id' => array( 'personal_id', true ),
 			'firstname' => array( 'firstname', true ),
 			'lastname' => array( 'lastname', false ),
-			'member_status' => array( 'city', false )
+			'status' => array( 'status', false )
 		);
 
 		return $sortable_columns;
@@ -93,15 +95,11 @@ class Members_ListTable extends WP_List_Table
 	{
 		switch( $column_name ) 
 		{ 
-			case 'suitability_number':
+			case 'personal_id':
 			case 'firstname':
 			case 'lastname':
-			case 'email_address':
-			case 'primary_contact':
-			case 'sectional':
-			case 'member_status':
-			case 'initial_date':
-			case 'last_update':
+			case 'membership':
+			case 'status':
 			  return $item[ $column_name ];
 			default:
 			  return print_r( $item, true ) ; //Troubleshooting Info
@@ -114,16 +112,11 @@ class Members_ListTable extends WP_List_Table
 	*/
 	function get_columns()
 	{
-		$columns = array(
-		'suitability_number' => 'Idoneidad',
-		'firstname'    => 'Nombre',
-		'lastname'    => 'Apellido',
-		'email_address'    => 'Correo',
-		'primary_contact'    => 'Contacto',
-		'sectional'    => 'Region',
-		'member_status'      => 'Estado',
-		'last_update'    => 'Ultima Actualizacion'
-		);
+		$columns = array('personal_id' => 'Cedula',
+						 'firstname'    => 'Nombre',
+						 'lastname'    => 'Apellido',
+						 'membership'    => 'Idoneidad',
+						 'status'      => 'Estado');
 		return $columns;
 	}
 	
@@ -137,7 +130,7 @@ class Members_ListTable extends WP_List_Table
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array($columns, $hidden, $sortable);
 		
-		$per_page     = $this->get_items_per_page( 'members_per_page', 2 );
+		$per_page     = $this->get_items_per_page( 'members_per_page', 25 );
 		$current_page = $this->get_pagenum();
 		$total_items  = self::record_count();
 
