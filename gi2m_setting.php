@@ -1,16 +1,16 @@
 <?php 
     /*
-    Plugin Name: MyMembershipStatus
+    Plugin Name: GI2M MyMembershipStatus
     Plugin URI: http://www.b4aconsulting.com/ghetto-interactive
     Description: undercontruction
     Version: 1.0
     Author: Ghetto Interative Lab
     Author URI: http://www.b4aconsulting.com/ghetto-interactive
-    Text Domain: MyMembershipStatus
+    Text Domain: GI_MyMembershipStatus
     Domain Path: /lang/
     */
     
-	require_once( ABSPATH . 'wp-content/plugins/GI_MembershipManager/helpers/gi2m_functions.php' );
+	require_once( ABSPATH . 'wp-content/plugins/GI_MembershipStatus/helpers/gi2m_functions.php' );
 
     /*---------------------------------------------------------------
                             Call-up Hook
@@ -24,8 +24,7 @@
                                 ShortCode
     -----------------------------------------------------------------*/
 
-    add_shortcode('gi2m-members-view','gi2m_displayMemberDirectory');
-    add_shortcode('gi2m-profile-view','gi2m_displayMemberProfile');
+    //add_shortcode('gi2m-members-view','gi2m_displayMemberDirectory');
 	
     /*---------------------------------------------------------------
                         Call-up Hook Functions
@@ -67,16 +66,6 @@
                             Action Functions
     -----------------------------------------------------------------*/
 
-	if(! function_exists('gi2m_memberPreRegistration'))
-	{
-		add_action('user_register','gi2m_memberPreRegistration');
-		
-		function gi2m_memberPreRegistration($user_id)
-		{
-			memberPreRegistration($user_id);
-		}
-	}
-	
     if(! function_exists('gi2m_build_menu'))
     {
 
@@ -102,16 +91,6 @@
                                  'gi2m_displayMembers');	
    
             }
-            else
-            {
-                add_submenu_page('gi2m-release-note', 
-                                 'Member Profile', 
-                                 'Member Profile',
-                                 0,
-                                 'gi2m-member-info', 
-                                 'gi2m_displayMemberInfo');
-            }
-            
         }
         
     }
@@ -124,18 +103,6 @@
         function gi2m_display_releasenotes()
         {
             include('release-note/gi2m_release_note.php');
-        }
-    }
-
-    if(! function_exists('gi2m_displayMemberInfo'))
-    {    
-        /*
-            Funtion: gi2m_displayMemberInfo
-            Description: display current member profile information in admin view
-          */
-        function gi2m_displayMemberInfo()
-        {
-            include('admin/gi2m_profileView.php');
         }
     }
 
@@ -159,17 +126,6 @@
         function gi2m_displayMemberDirectory()
         {
             include('public/gi2m_membersView.php');
-        }
-    }
-
-    if(! function_exists('gi2m_displayMemberProfile'))
-    {    /*
-            Funtion: gi2m_displayMemberProfile
-            Description: display one member profile on-demand in one shortcode
-          */
-        function gi2m_displayMemberProfile()
-        {
-            include('public/gi2m_profileView.php');
         }
     }
 ?>
