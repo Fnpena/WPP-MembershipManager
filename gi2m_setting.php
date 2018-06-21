@@ -1,12 +1,12 @@
 <?php 
     /*
-    Plugin Name: Membership Manager
+    Plugin Name: MyMembershipStatus
     Plugin URI: http://www.b4aconsulting.com/ghetto-interactive
     Description: undercontruction
     Version: 1.0
     Author: Ghetto Interative Lab
     Author URI: http://www.b4aconsulting.com/ghetto-interactive
-    Text Domain: GI_MembershipManager
+    Text Domain: MyMembershipStatus
     Domain Path: /lang/
     */
     
