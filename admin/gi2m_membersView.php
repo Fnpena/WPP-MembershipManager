@@ -64,6 +64,14 @@ class Members_ListTable extends WP_List_Table
 		return $wpdb->get_var( $sql );
 	}
 
+	/** Bulk action list */
+	function get_bulk_actions() 
+	{	
+		$actions = array(
+		'Print'    => 'Print ID'
+		);
+		return $actions;
+	}
 
 	/** Text displayed when no customer data is available */
 	public function no_items() {
@@ -86,6 +94,10 @@ class Members_ListTable extends WP_List_Table
 		return $sortable_columns;
 	}
 
+	function column_cb($item) 
+	{
+        return sprintf('<input type="checkbox" name="carnet[]" value="%s" />', $item['personal_id']);    
+    }
 	
 	/*
 	Funtion: column_default
@@ -112,7 +124,8 @@ class Members_ListTable extends WP_List_Table
 	*/
 	function get_columns()
 	{
-		$columns = array('personal_id' => 'Cedula',
+		$columns = array('cb' => '<input type="checkbox" />',
+						 'personal_id' => 'Cedula',
 						 'firstname'    => 'Nombre',
 						 'lastname'    => 'Apellido',
 						 'membership'    => 'Idoneidad',
