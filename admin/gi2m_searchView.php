@@ -136,9 +136,9 @@ class Members_ListTable extends WP_List_Table
 
 $myMembersListTable = new Members_ListTable();
 ?>
-<h1><?php echo get_admin_page_title(); ?></h1>
 <div class="wrap">
 	<h2><?php echo get_admin_page_title(); ?></h2>
+    <a href="../wp-admin/admin.php?page=gi2m-member-view" class="page-title-action">Add Student</a>
 	<form method="post">
 	<?php
 			$myMembersListTable->prepare_items();

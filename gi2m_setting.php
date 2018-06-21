@@ -2,9 +2,7 @@
     /*
     Plugin Name: GI2M MyCourseLog
     Plugin URI: http://www.b4aconsulting.com/ghetto-interactive
-    Description: This plugin is a record the all courses taken by one member. 
-	             additional let you search all course that one member has taken 
-				 or all members that has taken some course in particular
+    Description: This plugin is a record the all courses taken by one member. Additional let you search all course that one member has taken or all members that has taken some course in particular
     Version: 1.0
     Author: Ghetto Interative Lab
     Author URI: http://www.b4aconsulting.com/ghetto-interactive
@@ -19,15 +17,7 @@
     -----------------------------------------------------------------*/
 
     register_activation_hook(__FILE__,'gi2m_install');
-
     register_deactivation_hook(__FILE__,'gi2m_deactivation');
-
-    /*---------------------------------------------------------------
-                                ShortCode : TODO Eliminar ShortCode
-    -----------------------------------------------------------------*/
-
-    // add_shortcode('gi2m-members-view','gi2m_displayMemberDirectory');
-    // add_shortcode('gi2m-profile-view','gi2m_displayMemberProfile');
 	
     /*---------------------------------------------------------------
                         Call-up Hook Functions
@@ -71,7 +61,6 @@
 	
     if(! function_exists('gi2m_build_menu'))
     {
-
         add_action('admin_menu', 'gi2m_build_menu');
 
         function gi2m_build_menu()
@@ -92,10 +81,16 @@
                                  1, 
                                  'gi2m-search-course', 
                                  'gi2m_displayResults');	
+                
+                 add_submenu_page('gi2m-release-note', 
+                                 'New Student', 
+                                 'New Student',
+                                 1, 
+                                 'gi2m-member-view', 
+                                 'gi2m_displayMemberProfile');	
    
             }
-        }
-        
+        }      
     }
 
     /*---------------------------------------------------------------
@@ -117,49 +112,11 @@
         }
     }
 
-    // if(! function_exists('gi2m_displayMemberInfo'))
-    // {    
-        // /*
-            // Funtion: gi2m_displayMemberInfo
-            // Description: display current member profile information in admin view
-          // */
-        // function gi2m_displayMemberInfo()
-        // {
-            // include('admin/gi2m_profileView.php');
-        // }
-    // }
-
-    // if(! function_exists('gi2m_displayMembers'))
-    // {    
-        // /*
-            // Funtion: gi2m_displayMembers
-            // Description: display all members profile information in admin view
-          // */
-        // function gi2m_displayMembers()
-        // {
-            // include('admin/gi2m_membersView.php');
-        // }
-    // }
-
-    // if(! function_exists('gi2m_displayMemberDirectory'))
-    // {    /*
-            // Funtion: gi2m_displayMemberDirectory
-            // Description: display all members profile information in one shortcode
-          // */
-        // function gi2m_displayMemberDirectory()
-        // {
-            // include('public/gi2m_membersView.php');
-        // }
-    // }
-
-    // if(! function_exists('gi2m_displayMemberProfile'))
-    // {    /*
-            // Funtion: gi2m_displayMemberProfile
-            // Description: display one member profile on-demand in one shortcode
-          // */
-        // function gi2m_displayMemberProfile()
-        // {
-            // include('public/gi2m_profileView.php');
-        // }
-    // }
+    if(! function_exists('gi2m_displayMemberProfile'))
+    {    
+        function gi2m_displayMemberProfile()
+        {
+            include('admin/gi2m_profileView.php');
+        }
+    }
 ?>
