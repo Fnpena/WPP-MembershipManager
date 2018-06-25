@@ -22,7 +22,7 @@ function updatePluginDataBase()
       require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	  $charset_collate = $wpdb->get_charset_collate();   
     
-      $table_name = $wpdb->prefix . "gi2m_membership_status"; 
+      $table_name = $wpdb->prefix . "gims_membership_status"; 
       $sql = "CREATE TABLE $table_name (personal_id NVARCHAR(20),
 										membership NVARCHAR(15),				  
 										firstname NVARCHAR(30),
@@ -41,7 +41,7 @@ function updatePluginDataBase()
 function gims_install_data() 
 {
 		global $wpdb;
-		$table_name = $wpdb->prefix . 'gi2m_membership_status';
+		$table_name = $wpdb->prefix . 'gims_membership_status';
 		
 		$delete = $wpdb->query("TRUNCATE TABLE `".$table_name."`");
 		

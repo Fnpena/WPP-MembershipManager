@@ -10,7 +10,9 @@
     Domain Path: /lang/
     */
     
+	//define('PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ));
 	require_once( ABSPATH . 'wp-content/plugins/GI_MyMembershipStatus/helpers/gi2m_functions.php' );
+	require_once  ABSPATH . 'wp-content/plugins/GI_MyMembershipStatus/helpers/gi_initialize.php';
 
     /*---------------------------------------------------------------
                             Call-up Hook
@@ -22,14 +24,14 @@
     /*---------------------------------------------------------------
                                 ShortCode
     -----------------------------------------------------------------*/
-
+	//TODO: Pending to build login
     //add_shortcode('gi2m-members-view','gi2m_displayMemberDirectory');
 	
 	/*---------------------------------------------------------------
                           Script & Style Hook
     -----------------------------------------------------------------*/
-
-    add_action('admin_enqueue_scripts','gims_loadReferences');
+	//TODO: Move to GI_Initialize Class
+    //add_action('admin_enqueue_scripts','gims_loadReferences');
 	
     /*---------------------------------------------------------------
                         Call-up Hook Functions
@@ -71,26 +73,24 @@
                             Action Functions
     -----------------------------------------------------------------*/
 
-	if(! function_exists('gims_loadReferences'))
+	//TODO: Move to GI_Initialize
+	//add_action('wp_ajax_gims_generateCard', 'gi2m_build_menu');
+	
+	/* if(! function_exists('gims_loadReferences'))
     {
 		function gims_loadReferences($page_name)
 		{
-			if($page_name != 'toplevel_page_gi2m-membersx')
-			{ return;}
-		}
+			if($page_name != 'membership-manager_page_gi2m-members')
+			{ 
+				return;
+			}
 		
-		wp_enqueue_style('my-admin-style',
-						  plugins_url('\admin\css\style.css',__FILE__),
-						  [],
-						  false,
-						  'all');
-						  
-		wp_enqueue_script('my-admin-script',
-						  plugins_url('\admin\js\script.js',__FILE__),
-						  [],
-						  false,
-						  true);						 
-	}
+			wp_enqueue_style('myadmin_style', plugins_url('\admin\css\style.css',__FILE__), [], false, 'all');
+			wp_enqueue_script('myadmin_script', plugins_url('\admin\js\script.js',__FILE__), [], false, true);		
+
+			//wp_localize_script('myadmin_script','gims_testing',[ 'url' => admin_url('admin-ajax.php'), token => wp_create_nonce('gims_mytoken')]);
+		}			 
+	} */
 	
     if(! function_exists('gi2m_build_menu'))
     {
@@ -143,14 +143,23 @@
         }
     }
 
-    if(! function_exists('gi2m_displayMemberDirectory'))
-    {    /*
-            Funtion: gi2m_displayMemberDirectory
-            Description: display all members profile information in one shortcode
-          */
-        function gi2m_displayMemberDirectory()
-        {
-            include('public/gi2m_membersView.php');
-        }
-    }
+    // if(! function_exists('gi2m_displayMemberDirectory'))
+    // {    /*
+            // Funtion: gi2m_displayMemberDirectory
+            // Description: display all members profile information in one shortcode
+          // */
+        // function gi2m_displayMemberDirectory()
+        // {
+            // include('public/gi2m_membersView.php');
+        // }
+    // }
+	
+	function initialize_components() 
+	{
+		$mp_master = new GI_Initialize;
+		$mp_master->run();
+	}
+
+	initialize_components();
+
 ?>

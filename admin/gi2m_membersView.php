@@ -68,7 +68,7 @@ class Members_ListTable extends WP_List_Table
 	function get_bulk_actions() 
 	{	
 		$actions = array(
-		'Print'    => 'Print ID'
+		'PrintCard'    => 'Print ID'
 		);
 		return $actions;
 	}
@@ -163,5 +163,6 @@ $myMembersListTable = new Members_ListTable();
 			$myMembersListTable->search_box( 'Buscar', 'search-box-id' ); 
 			$myMembersListTable->display(); 
 	?>
+	<button class="random-x btn button-primary">Prueba AJAX</button>
 	</form>
 </div>
