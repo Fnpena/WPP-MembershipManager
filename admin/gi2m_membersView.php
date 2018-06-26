@@ -184,17 +184,11 @@ $myMembersListTable = new Members_ListTable();
 			$myMembersListTable->display(); 
 	?>
 	</form>
-	<!--Begin Modal MemberCard
-	<div id="myModal" class="modal">
-		<div class="modal-content" style="width:512px;margin-left:35%;">
-		<div id="GC_display" class="container GCTemplate"></div>
-		<div class="row" stlye="padding-left:25%;">
-		<div class="col-sm-offset-3 col-sm-6" style="padding-left:45px;">
-		<a href="#" class="btn btn-default btnExportGC" style="margin-top:10px;">Exportar</a>
-		<a href="#" class="btn btn-primary btn_modalclose" style="margin-top:10px;">cerrar</a>
-		</div>
-		</div>
-		</div>
+	<button class="btnModalTesting btn-primary">Carga Modal</button>
+	
+	<!--Begin Modal MemberCard-->
+	<div id="dialog-viewer" title="Modal Presenter">
+		<div class="col-sm-3 dialog-viewer-content"></div>
 	</div>
-	End Modal MemberCard-->
+	<!--End Modal MemberCard-->
 </div>

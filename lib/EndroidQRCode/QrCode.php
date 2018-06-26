@@ -177,9 +177,9 @@ class QrCode
      */
     public function __construct($text = '')
     {
-        $this->setPath(__DIR__.'/../assets/data');
-        $this->setImagePath(__DIR__.'/../assets/image');
-        $this->setLabelFontPath(__DIR__.'/../assets/font/opensans.ttf');
+        $this->setPath(__DIR__.'/assets/data');
+        $this->setImagePath(__DIR__.'/assets/image');
+        $this->setLabelFontPath(__DIR__.'/assets/font/opensans.ttf');
         $this->setText($text);
     }
 

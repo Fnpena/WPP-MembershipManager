@@ -2,25 +2,6 @@
 
 class GI_UMembership
 {
-	public function request_card()
-	{
-		check_ajax_referer( 'gims_myvalidator', 'nonce' );
-		
-		if(isset($_POST['action'])) 
-		{
-			$list_item = $_POST['peticion'];
-			
-			$html_response = '';
-			for($i = 0; $i < count($list_item) ; $i++)
-			{
-				$html_response = $html_response . $list_item[$i] . '||';
-			} 
-			echo json_encode(["resultado" => "Mi Mensaje: $html_response"]);
-			
-			wp_die();	
-		}
-	}
-	
 	/*
 		Funtion: Generate
 		Description: this function generate the printable user membership card
@@ -47,15 +28,14 @@ class GI_UMembership
 				foreach ( $db_response as $item )
 				{
 					extract($item,EXTR_OVERWRITE);
-				    //$html_response = '<span>'.$personal_id.'|-|'.$firstname.'|-|'.$lastname.'|-|'.$status.'</span>';
 					
-					$encrypted_pid = $this->dbCrypto->Encrypt('encrypt', $personal_id);
-					//$encrypted_pid = $personal_id;
-					$siteURL = "http://localhost/B4ADemoSite/wp-admin/admin.php?page=gi2m-members&sx=%s";
+					//$encrypted_pid = $this->dbCrypto->Encrypt('encrypt', $personal_id);
+					$encrypted_pid = $personal_id;
+					$siteURL = "http://localhost/B4ADemoSite/wp-admin/admin.php?page=gi2m-members?2sx=%s";
 					$statusVerifierURL = sprintf($siteURL,$encrypted_pid);
 					$QR_ImageSource = "../wp-content/plugins/GI_MyMembershipStatus/lib/EndroidQRCode/getQRCode.php?data=$statusVerifierURL";
 					
-					$output = "<div class='row'>
+					$output = $output. "<div class='GCTemplate row'>
 								<div class='col-sm-7' style='text-align:center;'>
 									<div class='row'><strong>Nombre:</strong>$firstname</div>
 									<div class='row'><strong>Apellido:</strong>$lastname</div>
@@ -71,7 +51,7 @@ class GI_UMembership
 				}
 			}
 			
-			echo json_encode(["response_data" => "$output"]);
+			echo json_encode(["response_code" => "OK","response_data" => "$output"]);
 			
 			wp_die();	
 		}

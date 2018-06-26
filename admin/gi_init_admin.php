@@ -23,6 +23,8 @@ class GI_InitAdmin
             return;
         }
         
+		wp_enqueue_style( 'bootstrap_min_css', $this->plugin_dir_url . 'css/bootstrap.min.css', [], $this->version, 'all' );
+		wp_enqueue_style( 'jquery_ui_css', $this->plugin_dir_url . 'css/jquery-ui.css', [], $this->version, 'all' );
         wp_enqueue_style( 'gims_admin_style', $this->plugin_dir_url . 'css/style.css', [], $this->version, 'all' );
         
     }
@@ -33,6 +35,9 @@ class GI_InitAdmin
             return;
         }
         
+		wp_enqueue_script( 'bootstrap_min_js', $this->plugin_dir_url . 'js/bootstrap.min.js', ['jquery'], $this->version, true );
+		wp_enqueue_script( 'jquery_ui_js', $this->plugin_dir_url . 'js/jquery-ui.js', ['jquery'], $this->version, true );
+		
         wp_enqueue_script( 'gims_admin_script', $this->plugin_dir_url . 'js/script.js', ['jquery'], $this->version, true );
 		
 		wp_localize_script('gims_admin_script',

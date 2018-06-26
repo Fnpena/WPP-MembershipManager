@@ -10,7 +10,7 @@ body
 	padding:15px;
 	border-radius:10px;
 	border: 1px solid black;
-	background: url('../wp-content/plugins/SPIA_M2SYS/image/Carnet-Template.png');
+	background: url('../../image/Carnet-Template.png');
 	font-size: 12px;
     font-family: monospace;
 }
