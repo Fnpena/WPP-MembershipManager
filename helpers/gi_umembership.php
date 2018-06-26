@@ -2,6 +2,25 @@
 
 class GI_UMembership
 {
+	public function request_card()
+	{
+		check_ajax_referer( 'gims_myvalidator', 'nonce' );
+		
+		if(isset($_POST['action'])) 
+		{
+			$list_item = $_POST['peticion'];
+			
+			$html_response = '';
+			for($i = 0; $i < count($list_item) ; $i++)
+			{
+				$html_response = $html_response . $list_item[$i] . '||';
+			} 
+			echo json_encode(["resultado" => "Mi Mensaje: $html_response"]);
+			
+			wp_die();	
+		}
+	}
+	
 	/*
 		Funtion: Generate
 		Description: this function generate the printable user membership card
@@ -12,12 +31,72 @@ class GI_UMembership
 		
 		if(isset($_POST['action'])) 
 		{
-			$current_value = $_POST['dato_prueba'];
-			echo json_encode(["resultado" => "Mi Mensaje: $current_value"]);
+			require_once( 'gi_dbmanager.php' );
+			$this->dbManager = new GI_DBManager;
+			$list_item = $_POST['requested_ids'];
+			
+			for($i = 0; $i < count($list_item) ; $i++)
+			{
+				$db_response = $this->dbManager->Get_MembershipCardData($list_item[$i]);
+				//$html_response = buildCard($db_response);
+				//TODO: Move this process external function
+				foreach ( $db_response as $item )
+				{
+					extract($item,EXTR_OVERWRITE);
+				    $html_response = '<span>'.$personal_id.'|-|'.$firstname.'|-|'.$lastname.'|-|'.$status.'</span>';
+				}
+			}
+			
+			echo json_encode(["response_data" => "$html_response"]);
 			
 			wp_die();	
 		}
+	}
+	
+	public function buildCard($response_data)
+	{
+		try 
+		{
+			$output = '';
+			foreach ( $response_data as $current_item )
+			{
+				extract($current_item,EXTR_OVERWRITE);
+				$output = $personal_id.'|-|'.$firstname.'|-|'.$lastname.'|-|'.$status;
+			}
+			return $output;
+		} 
+		catch (Exception $e) 
+		{
+			return $e->getMessage();
+		}
+		//$default_avatar = '';
+		//$QR_Profile = 'Data Pendiente';
+		//extract($card_data,EXTR_OVERWRITE);
+		//$nombre_completo = $card_data['firstname'];
+		//$cedula = '8-79-134';//$card_data['personal_id'];
 		
+		//return $nombre_completo;
+		//<img id='QR_code' alt='preview' src='../wp-content/plugins/SPIA_M2SYS/getQRCode.php?data=$QR_Profile'/>
+		/* $output = "<div class='row'>
+							<div class='col-sm-5'>
+								<div class='row' style='padding-top:77px;padding-left:54px;'>
+									<img id='content_photo' width='115' height='180' alt='preview' src='$default_avatar'/>
+								</div>
+							</div>
+							<div class='col-sm-7' style='text-align:center;'>
+								<div class='row' style='padding-top:60px;'>$nombre_completo</div>
+								<div class='row' style='padding-bottom:4px;'></div>
+								
+								<div class='row'><strong>Numero de cedula:</strong>$cedula</div>
+								<div class='row' style='padding-bottom:4px;'></div>
+								<div class='row' style='padding-top:22px;'>
+								</div>
+							</div>
+							<input type='hidden' id='hf_guidGC' name='hf_guidGC' value='$cedula'/>
+						</div>";
+		return $output; */
+	}
+		//$wpdb->show_errors();
 		// require_once( '/helpers/gi_dbmanager.php' );
 		// $default_avatar = "../wp-content/plugins/SPIA_M2SYS/image/avatar.png";
 		// $respond = "OK";
@@ -60,29 +139,7 @@ class GI_UMembership
 			{
 				$default_avatar = $profile_avatar;
 			}
-			
-			$respond = "<div class='row'>
-							<div class='col-sm-5'>
-								<div class='row' style='padding-top:77px;padding-left:54px;'>
-									<img id='content_photo' width='115' height='180' alt='preview' src='$default_avatar'/>
-								</div>
-							</div>
-							<div class='col-sm-7' style='text-align:center;'>
-								<div class='row' style='padding-top:60px;'>$full_name</div>
-								<div class='row' style='padding-bottom:4px;'></div>
-								<div class='row'><strong>Colegio:</strong>$college_des</div>
-								<div class='row' style='padding-bottom:4px;'></div>
-								<div class='row'><strong>Numero de Idoneidad:</strong>$suitability_number</div>
-								<div class='row' style='padding-bottom:4px;'></div>
-								<div class='row' style='padding-top:22px;'>
-								<img id='QR_code' alt='preview' 
-												  src='../wp-content/plugins/SPIA_M2SYS/getQRCode.php?data=$QR_Profile'/>
-								</div>
-							</div>
-							<input type='hidden' id='hf_guidGC' name='hf_guidGC' value='$memberCode'/>
-						</div>";
 		} */
-	}
 }
 
 ?>

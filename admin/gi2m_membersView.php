@@ -96,7 +96,7 @@ class Members_ListTable extends WP_List_Table
 
 	function column_cb($item) 
 	{
-        return sprintf('<input type="checkbox" name="carnet[]" value="%s" />', $item['personal_id']);    
+        return sprintf('<input type="checkbox" class="cbk_id" name="carnet[]" value="%s" />', $item['personal_id']);    
     }
 	
 	/*
@@ -133,6 +133,25 @@ class Members_ListTable extends WP_List_Table
 		return $columns;
 	}
 	
+	function process_bulk_action()
+	{
+		if('PrintCard' === $this->current_action())
+		{
+			require_once  ABSPATH . 'wp-content/plugins/GI_MyMembershipStatus/helpers/gi_umembership.php';
+			/* if(isset($_POST['action']) && $_POST['action'] == 'PrintCard')*/
+			$this->cargador = new GI_UMembership;
+			$list_item = $_POST['carnet'];
+			$respuesta = '';
+			for($i = 0; $i < count($list_item) ; $i++)
+			{
+				printf('Aqui %d',$i);
+				$respuesta = $this->request_card($list_item[$i]);
+			}
+			
+			echo $respuesta;
+		}
+	}
+	
 	/**
 	 * Handles data query and filter, sorting, and pagination.
 	 */
@@ -142,6 +161,7 @@ class Members_ListTable extends WP_List_Table
 		$hidden = array();
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array($columns, $hidden, $sortable);
+		//$this->process_bulk_action();
 		
 		$per_page     = $this->get_items_per_page( 'members_per_page', 25 );
 		$current_page = $this->get_pagenum();
@@ -163,6 +183,18 @@ $myMembersListTable = new Members_ListTable();
 			$myMembersListTable->search_box( 'Buscar', 'search-box-id' ); 
 			$myMembersListTable->display(); 
 	?>
-	<button class="random-x btn button-primary">Prueba AJAX</button>
 	</form>
+	<!--Begin Modal MemberCard
+	<div id="myModal" class="modal">
+		<div class="modal-content" style="width:512px;margin-left:35%;">
+		<div id="GC_display" class="container GCTemplate"></div>
+		<div class="row" stlye="padding-left:25%;">
+		<div class="col-sm-offset-3 col-sm-6" style="padding-left:45px;">
+		<a href="#" class="btn btn-default btnExportGC" style="margin-top:10px;">Exportar</a>
+		<a href="#" class="btn btn-primary btn_modalclose" style="margin-top:10px;">cerrar</a>
+		</div>
+		</div>
+		</div>
+	</div>
+	End Modal MemberCard-->
 </div>
