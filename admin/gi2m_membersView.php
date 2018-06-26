@@ -33,7 +33,7 @@ class Members_ListTable extends WP_List_Table
 		}
 		
 		//Aditional validation search parameter from QR
-		if(isset($_REQUEST['ss']))
+		if(isset($_REQUEST['sx']))
 		{
 			$sql .= " WHERE personal_id LIKE '%" . esc_sql( $_REQUEST['ss'] ). "%' ";
 		}

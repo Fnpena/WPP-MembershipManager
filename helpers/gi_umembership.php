@@ -32,22 +32,46 @@ class GI_UMembership
 		if(isset($_POST['action'])) 
 		{
 			require_once( 'gi_dbmanager.php' );
+			require_once( 'gi_crypto.php' );
+			
 			$this->dbManager = new GI_DBManager;
+			$this->dbCrypto = new GI_Crypto;
+			
 			$list_item = $_POST['requested_ids'];
 			
 			for($i = 0; $i < count($list_item) ; $i++)
 			{
 				$db_response = $this->dbManager->Get_MembershipCardData($list_item[$i]);
-				//$html_response = buildCard($db_response);
+				
 				//TODO: Move this process external function
 				foreach ( $db_response as $item )
 				{
 					extract($item,EXTR_OVERWRITE);
-				    $html_response = '<span>'.$personal_id.'|-|'.$firstname.'|-|'.$lastname.'|-|'.$status.'</span>';
+				    //$html_response = '<span>'.$personal_id.'|-|'.$firstname.'|-|'.$lastname.'|-|'.$status.'</span>';
+					
+					$encrypted_pid = $this->dbCrypto->Encrypt('encrypt', $personal_id);
+					//$encrypted_pid = $personal_id;
+					$siteURL = "http://localhost/B4ADemoSite/wp-admin/admin.php?page=gi2m-members&sx=%s";
+					$statusVerifierURL = sprintf($siteURL,$encrypted_pid);
+					$QR_ImageSource = "../wp-content/plugins/GI_MyMembershipStatus/lib/EndroidQRCode/getQRCode.php?data=$statusVerifierURL";
+					
+					$output = "<div class='row'>
+								<div class='col-sm-7' style='text-align:center;'>
+									<div class='row'><strong>Nombre:</strong>$firstname</div>
+									<div class='row'><strong>Apellido:</strong>$lastname</div>
+									<div class='row'><strong>Cedula:</strong>$personal_id</div>
+								</div>
+								<div class='col-sm-5'>
+									<div class='row'>
+										<img id='QR_code' alt='preview' src='$QR_ImageSource'/>
+									</div>
+								</div>
+								<input type='hidden' id='hf_guidGC' name='hf_guidGC' value='$personal_id'/>
+							</div>";
 				}
 			}
 			
-			echo json_encode(["response_data" => "$html_response"]);
+			echo json_encode(["response_data" => "$output"]);
 			
 			wp_die();	
 		}
@@ -76,25 +100,8 @@ class GI_UMembership
 		//$cedula = '8-79-134';//$card_data['personal_id'];
 		
 		//return $nombre_completo;
-		//<img id='QR_code' alt='preview' src='../wp-content/plugins/SPIA_M2SYS/getQRCode.php?data=$QR_Profile'/>
-		/* $output = "<div class='row'>
-							<div class='col-sm-5'>
-								<div class='row' style='padding-top:77px;padding-left:54px;'>
-									<img id='content_photo' width='115' height='180' alt='preview' src='$default_avatar'/>
-								</div>
-							</div>
-							<div class='col-sm-7' style='text-align:center;'>
-								<div class='row' style='padding-top:60px;'>$nombre_completo</div>
-								<div class='row' style='padding-bottom:4px;'></div>
-								
-								<div class='row'><strong>Numero de cedula:</strong>$cedula</div>
-								<div class='row' style='padding-bottom:4px;'></div>
-								<div class='row' style='padding-top:22px;'>
-								</div>
-							</div>
-							<input type='hidden' id='hf_guidGC' name='hf_guidGC' value='$cedula'/>
-						</div>";
-		return $output; */
+		
+		//return $output; */
 	}
 		//$wpdb->show_errors();
 		// require_once( '/helpers/gi_dbmanager.php' );

@@ -2,17 +2,16 @@
 
 class GI_Crypto
 {
-	
-		$encrypt_method = "AES-256-CBC";
-		$secret_key = '5cio2KXVI-Key';
-		$secret_iv = '5cio2KXVI-IV';
-		
 		/*
 			Funtion: Encrypt
 			Description: this function encrypt or decrypt one string 
 		*/
-		function Encrypt($string) 
+		public function Encrypt($string) 
 		{
+			$encrypt_method = "AES-256-CBC";
+		    $secret_key = '5cio2KXVIII-Key';
+			$secret_iv = '5cio2KXVIII-IV';
+		
 			$output = false;
 
 			// hash
@@ -31,8 +30,12 @@ class GI_Crypto
 			Funtion: Decrypt
 			Description: this function encrypt or decrypt one string 
 		*/
-		function Decrypt($string) 
+		public function Decrypt($string) 
 		{
+			$encrypt_method = "AES-256-CBC";
+			$secret_key = '5cio2KXVIII-Key';
+			$secret_iv = '5cio2KXVIII-IV';
+		
 			$output = false;
 			// hash
 			$key = hash('sha256', $secret_key);
