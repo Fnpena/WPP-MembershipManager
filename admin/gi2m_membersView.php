@@ -1,4 +1,16 @@
 <?php 
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Class: gi2m_membersView
+Function: Display and Search member status information also 
+Generate Membership Card
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Change Request Log
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+CR29062018
+Reason: Only display and sort by firstname and personal_id because the 
+excel file that load this data at production will have only this fields
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 //Check if class WP_List_Table exist 
 if( ! class_exists( 'WP_List_Table' ) ) 
@@ -20,17 +32,29 @@ class Members_ListTable extends WP_List_Table
 
 		global $wpdb;
 		
+		/* CR29062018
 		$sql = "SELECT personal_id,
  					   membership,
 					   firstname,		  
 					   lastname,
 					   status
+				  FROM {$wpdb->prefix}gi2m_membership_status"; */
+		
+		$sql = "SELECT personal_id,
+					   firstname,		  
+					   status
 				  FROM {$wpdb->prefix}gi2m_membership_status";
 
 		if ( isset( $_POST['s'] ) ) 
 		{
-			$sql .= " WHERE firstname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR lastname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR personal_id LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
+			$sql .= " WHERE firstname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR personal_id LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
 		}
+		
+		/*CR29062018
+		if ( isset( $_POST['s'] ) ) 
+		{
+			$sql .= " WHERE firstname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR lastname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR personal_id LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
+		} */
 		
 		//Aditional validation search parameter from QR
 		if(isset($_REQUEST['sx']))
@@ -87,7 +111,7 @@ class Members_ListTable extends WP_List_Table
 		$sortable_columns = array(
 			'personal_id' => array( 'personal_id', true ),
 			'firstname' => array( 'firstname', true ),
-			'lastname' => array( 'lastname', false ),
+			// 'lastname' => array( 'lastname', false ), CR29062018
 			'status' => array( 'status', false )
 		);
 
@@ -109,8 +133,8 @@ class Members_ListTable extends WP_List_Table
 		{ 
 			case 'personal_id':
 			case 'firstname':
-			case 'lastname':
-			case 'membership':
+			// case 'lastname': CR29062018
+			// case 'membership':
 			case 'status':
 			  return $item[ $column_name ];
 			default:
@@ -124,11 +148,16 @@ class Members_ListTable extends WP_List_Table
 	*/
 	function get_columns()
 	{
+		/*CR29062018 
 		$columns = array('cb' => '<input type="checkbox" />',
 						 'personal_id' => 'Cedula',
 						 'firstname'    => 'Nombre',
 						 'lastname'    => 'Apellido',
 						 'membership'    => 'Idoneidad',
+						 'status'      => 'Estado'); */
+		$columns = array('cb' => '<input type="checkbox" />',
+						 'personal_id' => 'Cedula',
+						 'firstname'    => 'Nombre',
 						 'status'      => 'Estado');
 		return $columns;
 	}
@@ -184,11 +213,13 @@ $myMembersListTable = new Members_ListTable();
 			$myMembersListTable->display(); 
 	?>
 	</form>
-	<button class="btnModalTesting btn-primary">Carga Modal</button>
 	
 	<!--Begin Modal MemberCard-->
 	<div id="dialog-viewer" title="Modal Presenter">
-		<div class="col-sm-3 dialog-viewer-content"></div>
+		<div id="capture" class="dialog-viewer-content"></div>
+		<div id="tab2" class="tab-content">
+			<img id="my_logo" alt="test"/>
+		</div>
 	</div>
 	<!--End Modal MemberCard-->
 </div>

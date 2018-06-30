@@ -36,9 +36,8 @@ class GI_UMembership
 					$QR_ImageSource = "../wp-content/plugins/GI_MyMembershipStatus/lib/EndroidQRCode/getQRCode.php?data=$statusVerifierURL";
 					
 					$output = $output. "<div class='GCTemplate row'>
-								<div class='col-sm-7' style='text-align:center;'>
+								<div class='col-sm-7 center-member'>
 									<div class='row'><strong>Nombre:</strong>$firstname</div>
-									<div class='row'><strong>Apellido:</strong>$lastname</div>
 									<div class='row'><strong>Cedula:</strong>$personal_id</div>
 								</div>
 								<div class='col-sm-5'>
@@ -47,7 +46,7 @@ class GI_UMembership
 									</div>
 								</div>
 								<input type='hidden' id='hf_guidGC' name='hf_guidGC' value='$personal_id'/>
-							</div>";
+							</div><div class='row' style='height:10px;'></div>";
 				}
 			}
 			

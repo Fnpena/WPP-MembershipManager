@@ -48,7 +48,6 @@ class GI_Initialize
         
 		
 		$this->loader->add_action( 'wp_ajax_gims_generateCard', $this->ajax_umembership, 'generate' );
-		//$this->loader->add_action( 'wp_ajax_gims_generate', $this->ajax_umembership, 'request_card' );
         // Agregando la página mp_pruebas
         //$this->cargador->add_action( 'admin_menu', $this->menu_pruebas, 'options_page' );
     }

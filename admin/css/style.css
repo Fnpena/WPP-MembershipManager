@@ -5,54 +5,32 @@ body
 
 .GCTemplate
 {
-	width:470px;
-	height:310px;
+	width:318px;
+	height:216px;
 	padding:15px;
 	border-radius:10px;
 	border: 1px solid black;
-	background: url('../../image/Carnet-Template.png');
+	background: url('../../image/Carnet-Template50.png');
 	font-size: 12px;
     font-family: monospace;
 }
 
-	/* The Modal (background) */
-.modal 
+#QR_code
 {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	left: 56px;
+    top: 114px;
+    position: relative;
+    border: solid 1px black;
 }
 
-/* Modal Content/Box */
-.modal-content 
+.dialog-viewer-content
 {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+	padding: 0 26%;
 }
 
-/* The Close Button */
-.close 
+.center-member
 {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus 
-{
-    color: black;
-    text-decoration: none;
-	cursor: pointer;
+	padding-top: 90px;
+    font-size: 10pt;
+    font-family: sans-serif;
 }
