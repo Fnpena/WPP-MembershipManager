@@ -10,34 +10,44 @@ class GI_Initialize
 	
 	protected $ajax_umembership;
     
-    //protected $build_menupage;
-    //protected $menu_pruebas;
     
-    public function __construct() {
-        
+    
+    public function __construct() 
+	{
         $this->version = '1.0.0';       
         $this->plugin_dir_path = plugin_dir_path( __FILE__ );
         $this->plugin_dir_path_dir = plugin_dir_path( __DIR__ );
         $this->start();
+		$this->set_language();
         $this->declare_hooks();
     }
     
-    public function start() {
-        
+    public function start() 
+	{    
         require_once $this->plugin_dir_path . 'gi_loader.php';
         require_once $this->plugin_dir_path_dir . 'admin/gi_init_admin.php';
-		
+		require_once $this->plugin_dir_path . 'gi_i18n.php';  
 		require_once $this->plugin_dir_path . 'gi_umembership.php';
 		
         $this->loader = new GI_Loader;
         $this->admin = new GI_InitAdmin($this->version);
         
-		$this->ajax_umembership = new GI_UMembership;
-		
-        //require_once $this->plugin_dir_path . 'mp-build-menupage.php';
-        //require_once $this->plugin_dir_path . 'mp-menu-pruebas.php';
-        //$this->build_menupage = new MP_Build_Menupage;
-        //$this->menu_pruebas = new MP_Menu_Pruebas( $this->build_menupage );
+		$this->ajax_umembership = new GI_UMembership;	
+    }
+	
+	 /**
+	 * Defina la configuración regional de este plugin para la internacionalización.
+     *
+     * Utiliza la clase BC_i18n para establecer el dominio y registrar el gancho
+     * con WordPress.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+    private function set_language()
+	{    
+        $bc_i18n = new GI_i18n();
+        $this->loader->add_action( 'plugins_loaded', $bc_i18n, 'load_plugin_textdomain' );           
     }
     
     public function declare_hooks() 
@@ -52,7 +62,8 @@ class GI_Initialize
         //$this->cargador->add_action( 'admin_menu', $this->menu_pruebas, 'options_page' );
     }
     
-    public function run() {
+    public function run() 
+	{
         $this->loader->run();
     }
     

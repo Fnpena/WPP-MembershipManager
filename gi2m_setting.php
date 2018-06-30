@@ -98,8 +98,8 @@
 
         function gi2m_build_menu()
         {
-            add_menu_page('WP Membership Manager'
-                        , 'Membership Manager'
+            add_menu_page(__('WP Membership Manager','GI_MyMembershipStatus')
+                        , __('WP Membership Manager','GI_MyMembershipStatus')
                         ,0
                         , 'gi2m-release-note'
                         ,'gi2m_display_releasenotes');
@@ -109,8 +109,8 @@
             {
                 //Add Sub-Menu Page
                 add_submenu_page('gi2m-release-note', 
-                                 'Membership List', 
-                                 'Membership List',
+                                 __('Membership List','GI_MyMembershipStatus'), 
+                                 __('Membership List','GI_MyMembershipStatus)',
                                  1, 
                                  'gi2m-members', 
                                  'gi2m_displayMembers');	
