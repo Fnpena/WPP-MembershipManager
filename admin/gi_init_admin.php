@@ -19,7 +19,7 @@ class GI_InitAdmin
     
     public function enqueue_styles( $hook ) {
         
-        if( $hook != 'membership-manager_page_gi2m-members' ) {
+        if( $hook != 'wp-membership-manager_page_gi2m-members' ) {
             return;
         }
         
@@ -31,7 +31,7 @@ class GI_InitAdmin
     
     public function enqueue_scripts( $hook ) {
                 
-        if( $hook != 'membership-manager_page_gi2m-members' ) {
+        if( $hook != 'wp-membership-manager_page_gi2m-members' ) {
             return;
         }
         

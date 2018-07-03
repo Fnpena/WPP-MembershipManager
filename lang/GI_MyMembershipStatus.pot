@@ -1,0 +1,64 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-01 02:16-0500\n"
+"PO-Revision-Date: 2018-07-01 02:16-0500\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Eazy Po 0.9.5.3\n"
+
+#: gi2m_setting.php:101 gi2m_setting.php:102
+msgid "WP Membership Manager"
+msgstr ""
+
+#: gi2m_setting.php:112 gi2m_setting.php:113
+msgid "Listado de Miembros"
+msgstr ""
+
+#: admin/gi2m_membersView.php:95
+msgid "Crear ID"
+msgstr ""
+
+#: admin/gi2m_membersView.php:102
+msgid "No existen registro que mostrar."
+msgstr ""
+
+#: admin/gi2m_membersView.php:159
+msgid "Cedula"
+msgstr ""
+
+#: admin/gi2m_membersView.php:160
+msgid "Nombre"
+msgstr ""
+
+#: admin/gi2m_membersView.php:161
+msgid "Estado"
+msgstr ""
+
+#: admin/gi2m_membersView.php:212
+msgid "Buscar"
+msgstr ""
+
+#: admin/gi2m_membersView.php:218
+msgid "Visualizar"
+msgstr ""
+
+#: helpers/gi_umembership.php:38
+msgid "Nombre :"
+msgstr ""
+
+#: helpers/gi_umembership.php:39
+msgid "Cedula :"
+msgstr ""

@@ -44,10 +44,10 @@ class GI_Initialize
 	 * @since    1.0.0
 	 * @access   private
 	 */
-    private function set_language()
+    public function set_language()
 	{    
-        $bc_i18n = new GI_i18n();
-        $this->loader->add_action( 'plugins_loaded', $bc_i18n, 'load_plugin_textdomain' );           
+        $gi_i18n = new GI_i18n;
+        $this->loader->add_action( 'plugins_loaded', $gi_i18n, 'load_plugin_textdomain' );           
     }
     
     public function declare_hooks() 

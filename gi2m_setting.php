@@ -109,8 +109,8 @@
             {
                 //Add Sub-Menu Page
                 add_submenu_page('gi2m-release-note', 
-                                 __('Membership List','GI_MyMembershipStatus'), 
-                                 __('Membership List','GI_MyMembershipStatus)',
+                                 __('Listado de Miembros','GI_MyMembershipStatus'), 
+                                 __('Listado de Miembros','GI_MyMembershipStatus'),
                                  1, 
                                  'gi2m-members', 
                                  'gi2m_displayMembers');	

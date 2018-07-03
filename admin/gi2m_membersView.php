@@ -47,7 +47,7 @@ class Members_ListTable extends WP_List_Table
 
 		if ( isset( $_POST['s'] ) ) 
 		{
-			$sql .= " WHERE firstname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR personal_id LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
+			$sql .= " WHERE UPPER(firstname) LIKE UPPER('%" . esc_sql( $_POST['s'] ). "%') OR personal_id LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
 		}
 		
 		/*CR29062018
@@ -92,14 +92,14 @@ class Members_ListTable extends WP_List_Table
 	function get_bulk_actions() 
 	{	
 		$actions = array(
-		'PrintCard'    => 'Print ID'
+		'PrintCard'    => __('Crear ID','GI_MyMembershipStatus')
 		);
 		return $actions;
 	}
 
 	/** Text displayed when no customer data is available */
 	public function no_items() {
-		_e( 'No existen registro que mostrar.');
+		_e( 'No existen registro que mostrar.','GI_MyMembershipStatus');
 	}
 	
 	/**
@@ -156,9 +156,9 @@ class Members_ListTable extends WP_List_Table
 						 'membership'    => 'Idoneidad',
 						 'status'      => 'Estado'); */
 		$columns = array('cb' => '<input type="checkbox" />',
-						 'personal_id' => 'Cedula',
-						 'firstname'    => 'Nombre',
-						 'status'      => 'Estado');
+						 'personal_id'  => __('Cedula','GI_MyMembershipStatus'),
+						 'firstname'    => __('Nombre','GI_MyMembershipStatus'),
+						 'status'       => __('Estado','GI_MyMembershipStatus'));
 		return $columns;
 	}
 	
@@ -173,7 +173,7 @@ class Members_ListTable extends WP_List_Table
 			$respuesta = '';
 			for($i = 0; $i < count($list_item) ; $i++)
 			{
-				printf('Aqui %d',$i);
+				//printf('Aqui %d',$i);
 				$respuesta = $this->request_card($list_item[$i]);
 			}
 			
@@ -204,21 +204,21 @@ class Members_ListTable extends WP_List_Table
 
 $myMembersListTable = new Members_ListTable();
 ?>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <div class="wrap">
 	<h2><?php echo get_admin_page_title(); ?></h2>
 	<form method="post">
 	<?php
 			$myMembersListTable->prepare_items();
-			$myMembersListTable->search_box( 'Buscar', 'search-box-id' ); 
+			$myMembersListTable->search_box( __('Buscar','GI_MyMembershipStatus'), 'search-box-id' ); 
 			$myMembersListTable->display(); 
 	?>
 	</form>
 	
 	<!--Begin Modal MemberCard-->
-	<div id="dialog-viewer" title="Modal Presenter">
+	<div id="dialog-viewer" title="<?php _e('Visualizar','GI_MyMembershipStatus') ?>">
 		<div id="capture" class="dialog-viewer-content"></div>
 		<div id="tab2" class="tab-content">
-			<img id="my_logo" alt="test"/>
 		</div>
 	</div>
 	<!--End Modal MemberCard-->

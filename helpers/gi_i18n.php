@@ -30,6 +30,6 @@ class GI_i18n
 	 */    
     public function load_plugin_textdomain() 
 	{    
-        load_plugin_textdomain('GI_MyMembershipStatus',false,plugin_dir_path( __DIR__ ) . 'lang');   
+        load_plugin_textdomain('GI_MyMembershipStatus', false, plugin_dir_path( __FILE__ ) . 'lang');   
     } 
 }

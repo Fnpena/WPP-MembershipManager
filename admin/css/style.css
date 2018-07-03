@@ -30,7 +30,22 @@ body
 
 .center-member
 {
-	padding-top: 90px;
-    font-size: 10pt;
+	padding-top: 82px;
     font-family: sans-serif;
+}
+
+.lbl-cname
+{
+	font-size: 11px;
+    position: relative;
+    bottom: 17px;
+    left: 35%;
+}
+
+.lbl-cpersonalid
+{
+	padding-left: 4%;
+    font-size: 11px;
+    padding-top: 1px;
+    position: relative;
 }

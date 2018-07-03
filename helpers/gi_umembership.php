@@ -35,10 +35,13 @@ class GI_UMembership
 					$statusVerifierURL = sprintf($siteURL,$encrypted_pid);
 					$QR_ImageSource = "../wp-content/plugins/GI_MyMembershipStatus/lib/EndroidQRCode/getQRCode.php?data=$statusVerifierURL";
 					
+                    $label_name       = sprintf("<strong>%s</strong><span class='lbl-cname'>%s</span>",__('Nombre :','GI_MyMembershipStatus'),$firstname);
+                    $label_personalID = sprintf("<strong>%s</strong><span class='lbl-cpersonalid'>%s</span>",__('Cedula :','GI_MyMembershipStatus'),$personal_id);
+                    
 					$output = $output. "<div class='GCTemplate row'>
 								<div class='col-sm-7 center-member'>
-									<div class='row'><strong>Nombre:</strong>$firstname</div>
-									<div class='row'><strong>Cedula:</strong>$personal_id</div>
+									<div class='row'>$label_name</div>
+									<div class='row'>$label_personalID</div>
 								</div>
 								<div class='col-sm-5'>
 									<div class='row'>

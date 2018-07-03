@@ -41,7 +41,7 @@ jQuery(document).ready(function($)
 		{
 			return $(this).val();
 		});
-		
+     	
 		$.ajax
 		({
 			url: gims_testing.url,
@@ -97,7 +97,7 @@ jQuery(document).ready(function($)
 		return false;
 	});
 	
-	function getCleanPath(url)
+/*	function getCleanPath(url)
 	{
 		var local = /localhost/;
 		if(local.test(url))
@@ -114,5 +114,5 @@ jQuery(document).ready(function($)
 			var url_domain = location.protocol + '//' + location.hostname;
 			return url.replace(url_domain,'');
 		}
-	}
+	}*/
 });
