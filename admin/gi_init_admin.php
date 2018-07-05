@@ -40,6 +40,8 @@ class GI_InitAdmin
 		
 		wp_enqueue_script( 'polyfill', $this->plugin_dir_url . 'js/polyfill.min.js', ['jquery'], $this->version, true );
 		wp_enqueue_script( 'html2canvas', $this->plugin_dir_url . 'js/html2canvas.min.js', ['jquery','polyfill'], $this->version, true );
+        
+        wp_enqueue_script( 'jspdf', $this->plugin_dir_url . 'js/jspdf.min.js', ['jquery'], $this->version, true );
 		
         wp_enqueue_script( 'gims_admin_script', $this->plugin_dir_url . 'js/script.js', ['jquery'], $this->version, true );
 		
