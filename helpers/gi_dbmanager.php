@@ -14,7 +14,7 @@ class GI_DBManager
 		{
 			global $wpdb;
 			//$memberID = esc_sql($memberID);
-			$table_name = $wpdb->prefix . 'gi2m_membership_status';
+			$table_name = $wpdb->prefix . 'gims_membership_status';
 			//$table_name = $wpdb->prefix . 'gims_membership_status';
 			$result = $wpdb->get_results( "SELECT firstname,lastname,status,personal_id FROM $table_name WHERE personal_id = '$memberID' ", 'ARRAY_A' );
 

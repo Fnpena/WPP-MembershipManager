@@ -26,6 +26,7 @@ body
 .dialog-viewer-content
 {
 	padding: 0 26%;
+    width: 100%;
 }
 
 .center-member

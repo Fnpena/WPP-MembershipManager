@@ -43,7 +43,7 @@ class Members_ListTable extends WP_List_Table
 		$sql = "SELECT personal_id,
 					   firstname,		  
 					   status
-				  FROM {$wpdb->prefix}gi2m_membership_status";
+				  FROM {$wpdb->prefix}gims_membership_status";
 
 		if ( isset( $_POST['s'] ) ) 
 		{
@@ -84,7 +84,7 @@ class Members_ListTable extends WP_List_Table
 	public static function record_count() 
 	{
 		global $wpdb;
-		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}gi2m_membership_status";
+		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}gims_membership_status";
 		return $wpdb->get_var( $sql );
 	}
 

@@ -18,14 +18,13 @@ jQuery(document).ready(function($)
 				html2canvas($divContent).then(function (canvas) {
 				var base64image = canvas.toDataURL("image/png");
 				
+                //Original Code for Testing
                 //$('#tab2').html("<img alt='view-result' id='my_viewer' />");
 				//$('#my_viewer').attr("src",base64image);
 				//$('#capture').hide(); 
-                //var pdf = new jsPDF('p', 'pt', [canvas.height, canvas.width]);
+                
                 var pdf = new jsPDF();
-
                 pdf.addImage(base64image, 'PNG', 0, 0);
-                //pdf.autoPrint()
                 pdf.save("download.pdf");
 					
 				});
