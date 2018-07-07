@@ -4,6 +4,8 @@ class GI_InitAdmin
 {
     
     private $version;
+	private $build_menupage;
+	
     private $plugin_dir_path;
     private $plugin_dir_url;
     private $plugin_dir_url_dir;
@@ -13,13 +15,14 @@ class GI_InitAdmin
         $this->version = $version;
         $this->plugin_dir_path = plugin_dir_path( __FILE__ );
         $this->plugin_dir_url = plugin_dir_url( __FILE__ );
-        $this->plugin_dir_url_dir = plugin_dir_url( __DIR__ );        
+        $this->plugin_dir_url_dir = plugin_dir_url( __DIR__ );
+		$this->build_menupage = new BC_BuildMenu();	
         
     }
     
     public function enqueue_styles( $hook ) {
         
-        if( $hook != 'wp-membership-manager_page_gi2m-members' ) {
+        if( $hook != 'toplevel_page_gi2m-members' ) {
             return;
         }
         
@@ -31,7 +34,7 @@ class GI_InitAdmin
     
     public function enqueue_scripts( $hook ) {
                 
-        if( $hook != 'wp-membership-manager_page_gi2m-members' ) {
+        if( $hook != 'toplevel_page_gi2m-members' ) {
             return;
         }
         
@@ -54,4 +57,26 @@ class GI_InitAdmin
         
     }
     
+	public function add_menu()
+	{
+		/* add_menu_page(__('WP Membership Manager','GI_MyMembershipStatus')
+				,__('WP Membership Manager','GI_MyMembershipStatus')
+				,0
+				,'gi2m-release-note'
+				,'gi2m_display_releasenotes'); */
+	
+		//Add Sub-Menu Page
+		$this->build_menupage->add_menu_page(__('Listado de Miembros','GI_MyMembershipStatus'),
+					  __('Listado de Miembros','GI_MyMembershipStatus'),
+						0,
+						'gi2m-members',
+						[$this,'displayMenu']);
+						
+		$this->build_menupage->run();
+	}
+	
+	public function displayMenu()
+	{
+		require_once GI_PLUGIN_DIR_PATH.'admin/partials/gi2m_membersView.php';
+	}
 }

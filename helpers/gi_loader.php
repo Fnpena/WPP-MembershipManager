@@ -42,12 +42,4 @@ class GI_Loader
         
     }   
 }
-
 ?>
-
-
-
-
-
-
-

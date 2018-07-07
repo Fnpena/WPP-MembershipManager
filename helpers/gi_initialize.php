@@ -1,5 +1,4 @@
 <?php
-
 class GI_Initialize 
 { 
     protected $plugin_dir_path;
@@ -8,9 +7,7 @@ class GI_Initialize
     protected $loader;
     protected $admin;
 	
-	protected $ajax_umembership;
-    
-    
+	protected $ajax_umembership;  
     
     public function __construct() 
 	{
@@ -27,6 +24,7 @@ class GI_Initialize
         require_once $this->plugin_dir_path . 'gi_loader.php';
         require_once $this->plugin_dir_path_dir . 'admin/gi_init_admin.php';
 		require_once $this->plugin_dir_path . 'gi_i18n.php';  
+		require_once $this->plugin_dir_path . 'gi_buildmenu.php';  
 		require_once $this->plugin_dir_path . 'gi_umembership.php';
 		
         $this->loader = new GI_Loader;
@@ -55,6 +53,8 @@ class GI_Initialize
         // Cargando los estilos y scripts del admin
         $this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_styles' );
         $this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_scripts' );
+		
+		$this->loader->add_action( 'admin_menu', $this->admin, 'add_menu' );
         
 		
 		$this->loader->add_action( 'wp_ajax_gims_generateCard', $this->ajax_umembership, 'generate' );
