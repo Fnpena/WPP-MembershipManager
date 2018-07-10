@@ -17,8 +17,8 @@ body
 
 #QR_code
 {
-	left: 56px;
-    top: 114px;
+	left: 36px;
+    top: 92px;
     position: relative;
     border: solid 1px black;
 }
@@ -37,7 +37,7 @@ body
 
 .lbl-cname
 {
-	font-size: 11px;
+	font-size: 10px;
     position: relative;
     bottom: 17px;
     left: 35%;
@@ -46,7 +46,12 @@ body
 .lbl-cpersonalid
 {
 	padding-left: 4%;
-    font-size: 11px;
+    font-size: 10px;
     padding-top: 1px;
     position: relative;
+}
+
+#dialog-viewer
+{
+    width: 100%!important;
 }

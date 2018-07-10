@@ -47,7 +47,7 @@ class Members_ListTable extends WP_List_Table
 
 		if ( isset( $_POST['s'] ) ) 
 		{
-			$sql .= " WHERE UPPER(firstname) LIKE UPPER('%" . esc_sql( $_POST['s'] ). "%') OR personal_id LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
+			$sql .= " WHERE UPPER(firstname) LIKE UPPER('%" . esc_sql( $_POST['s'] ). "%') OR personal_id = '" . esc_sql( $_POST['s'] ). "' ";
 		}
 		
 		/*CR29062018
@@ -59,7 +59,16 @@ class Members_ListTable extends WP_List_Table
 		//Aditional validation search parameter from QR
 		if(isset($_REQUEST['sx']))
 		{
-			$sql .= " WHERE personal_id LIKE '%" . esc_sql( $_REQUEST['ss'] ). "%' ";
+            /*
+             Add QueryString Decryption protocol
+            */
+			require_once( GI_PLUGIN_DIR_PATH.'helpers/gi_crypto.php' );
+			$dbCrypto = new GI_Crypto;
+            
+            $decrypted_pid = $dbCrypto->Decrypt($_REQUEST['sx']);
+            var_dump($decrypted_pid);
+            if(isset($decrypted_pid) && $decrypted_pid!=null && $decrypted_pid!='')
+			     $sql .= " WHERE personal_id = '" . esc_sql( $decrypted_pid ). "' ";
 		}
 		
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
@@ -85,6 +94,10 @@ class Members_ListTable extends WP_List_Table
 	{
 		global $wpdb;
 		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}gims_membership_status";
+        if ( isset( $_POST['s'] ) ) 
+		{
+			$sql .= " WHERE UPPER(firstname) LIKE UPPER('%" . esc_sql( $_POST['s'] ). "%') OR personal_id LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
+		}
 		return $wpdb->get_var( $sql );
 	}
 
@@ -208,6 +221,7 @@ $myMembersListTable = new Members_ListTable();
 <div class="wrap">
 	<h2><?php echo get_admin_page_title(); ?></h2>
 	<form method="post">
+    <input type="hidden" name="page" value="members_listtable" />
 	<?php
 			$myMembersListTable->prepare_items();
 			$myMembersListTable->search_box( __('Buscar','GI_MyMembershipStatus'), 'search-box-id' ); 

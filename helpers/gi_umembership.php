@@ -29,16 +29,22 @@ class GI_UMembership
 				{
 					extract($item,EXTR_OVERWRITE);
 					
-					//$encrypted_pid = $this->dbCrypto->Encrypt('encrypt', $personal_id);
-					$encrypted_pid = $personal_id;
-					$siteURL = "http://localhost/B4ADemoSite/wp-admin/admin.php?page=gi2m-members?2sx=%s";
-					$statusVerifierURL = sprintf($siteURL,$encrypted_pid);
+					$encrypted_pid = $this->dbCrypto->Encrypt($personal_id);
+					//$encrypted_pid = $personal_id;
+                    
+                    $domainName =  $_SERVER['HTTP_HOST'];
+                    //$domainName =  "http://localhost/B4ADemoSite";
+                    
+					$siteURL = "%s/wp-admin/admin.php?page=gi2m-members?2sx=%s";
+					$statusVerifierURL = sprintf($siteURL,$domainName,$encrypted_pid);
+                    
 					$QR_ImageSource = "../wp-content/plugins/GI_MyMembershipStatus/lib/EndroidQRCode/getQRCode.php?data=$statusVerifierURL";
 					
                     $label_name       = sprintf("<strong>%s</strong><span class='lbl-cname'>%s</span>",__('Nombre :','GI_MyMembershipStatus'),$firstname);
                     $label_personalID = sprintf("<strong>%s</strong><span class='lbl-cpersonalid'>%s</span>",__('Cedula :','GI_MyMembershipStatus'),$personal_id);
+                    $GCUniqueId = sprintf("GC-%s",$personal_id);
                     
-					$output = $output. "<div class='GCTemplate row'>
+					$output = $output. "<div id='$GCUniqueId' class='GCTemplate row'>
 								<div class='col-sm-7 center-member'>
 									<div class='row'>$label_name</div>
 									<div class='row'>$label_personalID</div>
@@ -48,7 +54,6 @@ class GI_UMembership
 										<img id='QR_code' alt='preview' src='$QR_ImageSource'/>
 									</div>
 								</div>
-								<input type='hidden' id='hf_guidGC' name='hf_guidGC' value='$personal_id'/>
 							</div><div class='row' style='height:10px;'></div>";
 				}
 			}

@@ -10,7 +10,7 @@ $qrCode = new QrCode();
         $qrCode
             ->setText($QR_URL)
             ->setExtension('png')
-            ->setSize(60)
+            ->setSize(80)
             ->setPadding(5);
 			$qrCode->render();
 }
