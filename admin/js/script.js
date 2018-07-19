@@ -13,26 +13,29 @@ jQuery(document).ready(function($)
 		{
 			"Export to PDF": function()
 			{
-				var $divContent = $('#capture')[0]; 
+                var $divContent = $('#capture')[0]; 
 				
 				html2canvas($divContent).then(function (canvas) {
 				var base64image = canvas.toDataURL("image/png");
 				
                 //Original Code for Testing
-                //$('#tab2').html("<img alt='view-result' id='my_viewer' />");
-				//$('#my_viewer').attr("src",base64image);
-				//$('#capture').hide(); 
+                $('#tab2').html("<img alt='view-result' id='my_viewer' />");
+				$('#my_viewer').attr("src",base64image);
+				$('#capture').hide(); 
                 
-                var pdf = new jsPDF();
-                pdf.addImage(base64image, 'PNG', 0, 0);
-                pdf.save("download.pdf");
+                //var pdf = new jsPDF();
+                //pdf.addImage(base64image, 'PNG', 0, 0);
+                //pdf.save("download.pdf");
 					
-				});
+				});   
 			},
-			Cancel: function(){ $(this).dialog('close'); }
+			Cancel: function()
+            {
+                $(this).dialog('close'); 
+            }
 		}
 	});
-	
+    
 	/*+++++++++++++++++++++++++++++++++++++++++++
 	Name: ActionBtn Event
 	Description: This event raise when apply button

@@ -35,14 +35,15 @@ class GI_UMembership
                     $domainName =  $_SERVER['HTTP_HOST'];
                     //$domainName =  "http://localhost/B4ADemoSite";
                     
-					$siteURL = "%s/wp-admin/admin.php?page=gi2m-members?2sx=%s";
+					//$siteURL = "%s/wp-admin/admin.php?page=gi2m-members?2sx=%s"; // Intranet-Mode
+                    $siteURL = "%s/validator-coici/?gims-membership-validator=%s";
 					$statusVerifierURL = sprintf($siteURL,$domainName,$encrypted_pid);
                     
 					$QR_ImageSource = "../wp-content/plugins/GI_MyMembershipStatus/lib/EndroidQRCode/getQRCode.php?data=$statusVerifierURL";
 					
-                    $label_name       = sprintf("<strong>%s</strong><span class='lbl-cname'>%s</span>",__('Nombre :','GI_MyMembershipStatus'),$firstname);
-                    $label_personalID = sprintf("<strong>%s</strong><span class='lbl-cpersonalid'>%s</span>",__('Cedula :','GI_MyMembershipStatus'),$personal_id);
-                    $GCUniqueId = sprintf("GC-%s",$personal_id);
+                    $label_name       = sprintf("<span class='lbl-cname'>%s</span>",$firstname);
+                    $label_personalID = sprintf("<span class='lbl-cpersonalid'>%s</span>",$personal_id);
+                    $GCUniqueId = sprintf("ZX%s",str_replace('-','',$personal_id));
                     
 					$output = $output. "<div id='$GCUniqueId' class='GCTemplate row'>
 								<div class='col-sm-7 center-member'>

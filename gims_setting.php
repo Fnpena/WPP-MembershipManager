@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: GI2M MyMembershipStatus
- * Version: 1.0
+ * Version: 1.0.0
  * Plugin URI: http://www.b4aconsulting.com/
  * Description: This component has current state of all record membership.
  * Author: Ghetto Interative Lab

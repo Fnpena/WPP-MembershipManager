@@ -231,9 +231,10 @@ $myMembersListTable = new Members_ListTable();
 	
 	<!--Begin Modal MemberCard-->
 	<div id="dialog-viewer" title="<?php _e('Visualizar','GI_MyMembershipStatus') ?>">
-		<div id="capture" class="dialog-viewer-content"></div>
-		<div id="tab2" class="tab-content">
+		<div id="capture" style="overflow:visible;" class="dialog-viewer-content"></div>
+        <div id="tab2" class="tab-content">
 		</div>
+        <div id="hiddenCapture"></div>
 	</div>
 	<!--End Modal MemberCard-->
 </div>
