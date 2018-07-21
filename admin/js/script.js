@@ -11,25 +11,25 @@ jQuery(document).ready(function($)
 		modal: true,
 		buttons:
 		{
-			"Export to PDF": function()
-			{
-                var $divContent = $('#capture')[0]; 
-				
-				html2canvas($divContent).then(function (canvas) {
-				var base64image = canvas.toDataURL("image/png");
-				
-                //Original Code for Testing
-                $('#tab2').html("<img alt='view-result' id='my_viewer' />");
-				$('#my_viewer').attr("src",base64image);
-				$('#capture').hide(); 
-                
-                //var pdf = new jsPDF();
-                //pdf.addImage(base64image, 'PNG', 0, 0);
-                //pdf.save("download.pdf");
-					
-				});   
-			},
-			Cancel: function()
+//			"Export to PDF": function()
+//			{
+//                var $divContent = $('#capture')[0]; 
+//				
+//				html2canvas($divContent).then(function (canvas) {
+//				var base64image = canvas.toDataURL("image/png");
+//				
+//                //Original Code for Testing
+//                $('#tab2').html("<img alt='view-result' id='my_viewer' />");
+//				$('#my_viewer').attr("src",base64image);
+//				$('#capture').hide(); 
+//                
+//                //var pdf = new jsPDF();
+//                //pdf.addImage(base64image, 'PNG', 0, 0);
+//                //pdf.save("download.pdf");
+//					
+//				});   
+//			},
+			"Cerrar": function()
             {
                 $(this).dialog('close'); 
             }
@@ -65,7 +65,9 @@ jQuery(document).ready(function($)
 			success: function(data)
 			{
 				$('#dialog-viewer').dialog('open');
-				$('.dialog-viewer-content').html(data.response_data);
+                $iframe_tag = "<iframe style='position:relative;right:157px;' src='"+data.response_data+"' width='600px' height='370px' />";
+				$('.dialog-viewer-content').html($iframe_tag);
+                console.log(data.response_data);
 			}
 		});
 		return false;

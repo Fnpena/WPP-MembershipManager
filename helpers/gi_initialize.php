@@ -12,7 +12,7 @@ class GI_Initialize
     
     public function __construct() 
 	{
-        $this->version = '1.0.0';       
+        $this->version = '1.2.1';       
         $this->plugin_dir_path = plugin_dir_path( __FILE__ );
         $this->plugin_dir_path_dir = plugin_dir_path( __DIR__ );
         $this->start();
