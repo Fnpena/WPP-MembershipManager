@@ -13,7 +13,7 @@ class myPDF extends FPDF
         // Move to the right
         $this->Cell(80);
         // Title
-        $this->Cell(30,10,'Title',0,0,'C');
+        $this->Cell(30,10,'Listado de Miembros',0,0,'C');
         // Line break
         $this->Ln(12);
     }
@@ -47,14 +47,15 @@ class GIMS_PDFBuiilder extends myPDF
         //$files = glob($directory . "*");
         $files = array_diff(scandir($directory), array('.', '..','base'));
         //$files = scandir($directory);
+        
          $x = 0;
          $counter = 0;
          $item_per_page = 4;
          $total_files = count($files);
          $remain_items = $total_files;
+         $rounds_num = round($total_files/3) < 3 ? 1 : round($total_files/3);
 
-         //$pdf->Cell(0,10,'Current FileName:'.var_dump($files),0,1,'C');
-        for($i = 0; $i < round($total_files/3); $i++)
+        for($i = 0; $i < $rounds_num; $i++)
         {
             if($counter>0)
             {

@@ -56,12 +56,12 @@ class GI_UMembership
     {
         //TODO Add Debug Mode pass by constructor
         //PROD Mode
-        $this->domain_url = $_SERVER['HTTP_HOST'];
+        //$this->domain_url = $_SERVER['HTTP_HOST'];
         $this->validator_url = "%s/validator-coici/?gims-membership-validator=%s";
         $this->qr_generator_url = "%s/wp-content/plugins/GI_MyMembershipStatus/lib/EndroidQRCode/getQRCode.php?data=%s";
                     
         //DEBUG Mode
-        //$this->domain_url =  "http://localhost/B4ADemoSite";
+        $this->domain_url =  "http://localhost/B4ADemoSite";
         //$this->validator_url = "%s/wp-admin/admin.php?page=gi2m-members?2sx=%s";
     }
     
@@ -93,33 +93,7 @@ class GI_UMembership
                 $list_item = $_POST['requested_ids'];
                 
                 //Clean directory from previous executions
-                self::delete_directory(GI_PLUGIN_DIR_PATH.'image/resources');
-                //delete_directory(GI_PLUGIN_DIR_PATH.'image/resources/base');
-//                $dirname = GI_PLUGIN_DIR_PATH.'image/resources';
-//                if (is_dir($dirname))
-//                {    
-//                    $dir_handle = opendir($dirname);
-//                
-//                    if (!$dir_handle)
-//                    {}
-//                    else
-//                    {     
-//                        while($file = readdir($dir_handle)) 
-//                        {
-//                            if ($file != "." && $file != ".." && $file != "base") 
-//                            {
-//                            if (!is_dir($dirname."/".$file))
-//                                 unlink($dirname."/".$file);
-//    //                        else
-//    //                             delete_directory($dirname.'/'.$file);
-//    //                        }
-//                            }
-//                        }
-//                    }
-//
-//                    closedir($dir_handle);
-//                }
-        
+                self::delete_directory(GI_PLUGIN_DIR_PATH.'image/resources');     
                 
                 for($i = 0; $i < count($list_item) ; $i++)
                 {
@@ -151,11 +125,11 @@ class GI_UMembership
                         $customQR = @imagecreatefrompng($CustomQR_URL);
 
                         //Set font color
-                        $font_color = imagecolorallocate($im, 0, 0, 0);
+                        $font_color = imagecolorallocate($im, 47, 47, 47);
 
                         //Add Member personal information to image base 
-                        imagestring($base_template, 5, 5,  115,$firstname, $font_color);
-                        imagestring($base_template, 5, 5,  135,$personal_id, $font_color);
+                        imagestring($base_template, 3, 5,  115,$firstname, $font_color);
+                        imagestring($base_template, 3, 5,  135,$personal_id, $font_color);
 
                         //Add QRCode Image to fixed position in Base Template Image
                         imagecopy($base_template, $customQR, imagesx($base_template)-imagesx($customQR)-5, imagesy($base_template)-imagesy($customQR)-10, 0, 0, imagesx($customQR), imagesy($customQR));
