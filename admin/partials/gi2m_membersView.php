@@ -28,7 +28,7 @@ class Members_ListTable extends WP_List_Table
 	 *
 	 * @return mixed
 	 */
-	public static function get_members( $per_page = 25, $page_number = 1 ) {
+	public static function get_members( $per_page = 50, $page_number = 1 ) {
 
 		global $wpdb;
 		
@@ -205,7 +205,7 @@ class Members_ListTable extends WP_List_Table
 		$this->_column_headers = array($columns, $hidden, $sortable);
 		//$this->process_bulk_action();
 		
-		$per_page     = $this->get_items_per_page( 'members_per_page', 25 );
+		$per_page     = $this->get_items_per_page( 'members_per_page', 50 );
 		$current_page = $this->get_pagenum();
 		$total_items  = self::record_count();
 

@@ -67,7 +67,7 @@ jQuery(document).ready(function($)
 				$('#dialog-viewer').dialog('open');
                 $iframe_tag = "<iframe style='position:relative;right:157px;' src='"+data.response_data+"' width='600px' height='370px' />";
 				$('.dialog-viewer-content').html($iframe_tag);
-                console.log(data.response_data);
+                //console.log(data.response_data);
 			}
 		});
 		return false;
@@ -101,8 +101,11 @@ jQuery(document).ready(function($)
 			},
 			success: function(data)
 			{
-				$('#dialog-viewer').dialog('open');
-				$('.dialog-viewer-content').html(data.response_data);
+				//$('#dialog-viewer').dialog('open');
+				//$('.dialog-viewer-content').html(data.response_data);
+                $('#dialog-viewer').dialog('open');
+                $iframe_tag = "<iframe style='position:relative;right:157px;' src='"+data.response_data+"' width='600px' height='370px' />";
+				$('.dialog-viewer-content').html($iframe_tag);
 			}
 		});
 		return false;

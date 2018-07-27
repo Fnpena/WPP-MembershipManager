@@ -18,7 +18,7 @@ if(! defined('WPINC'))
 global $wpdb;
 //define( 'BC_REALPATH_BASENAME_PLUGIN', dirname( plugin_basename( __FILE__ ) ) . '/' );
 define( 'GI_PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ) );
-//define( 'BC_PLUGIN_DIR_URL', plugin_dir_url( __FILE__ ) );
+define( 'GI_PLUGIN_DIR_URL', plugin_dir_url( __FILE__ ) );
 define( 'GIMS_TABLE', "{$wpdb->prefix}gims_membership_status" );
 
 function gi_installer() 

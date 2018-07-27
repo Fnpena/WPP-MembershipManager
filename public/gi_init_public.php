@@ -19,17 +19,13 @@ class GI_InitPublic
     
     public function enqueue_styles( $hook ) {
         
-		wp_enqueue_style( 'bootstrap_public', GI_PLUGIN_DIR_PATH . 'public/css/bootstrap.min.css', [], $this->version, 'all' );
-		//wp_enqueue_style( 'jquery_ui_css', GI_PLUGIN_DIR_PATH . 'css/jquery-ui.css', [], $this->version, 'all' );
-        
-        wp_enqueue_style( 'gims_public_style', GI_PLUGIN_DIR_PATH . 'public/css/style.css', [], $this->version, 'all' );
+		wp_enqueue_style( 'bootstrap_public', GI_PLUGIN_DIR_URL . 'public/css/bootstrap.min.css', [], $this->version, 'all' );
+        wp_enqueue_style( 'gims_public_style', GI_PLUGIN_DIR_URL . 'public/css/style.css', [], $this->version, 'all' );
     }
     
     public function enqueue_scripts( $hook ) {
-		wp_enqueue_script( 'bootstrap_public_js', GI_PLUGIN_DIR_PATH . 'public/js/bootstrap.min.js', ['jquery'], $this->version, true );
-		//wp_enqueue_script( 'jquery_ui_js', GI_PLUGIN_DIR_PATH . 'js/jquery-ui.js', ['jquery'], $this->version, true );
-		
-        wp_enqueue_script( 'gims_public_script', GI_PLUGIN_DIR_PATH . 'public/js/script.js', ['jquery'], $this->version, true );
+		wp_enqueue_script( 'bootstrap_public_js', GI_PLUGIN_DIR_URL . 'public/js/bootstrap.min.js', ['jquery'], $this->version, true );
+        wp_enqueue_script( 'gims_public_script', GI_PLUGIN_DIR_URL . 'public/js/script.js', ['jquery'], $this->version, true );
     }
     
     /*public function custom_shortcode( $atts, $content = '' ) {

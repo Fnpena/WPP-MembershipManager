@@ -56,12 +56,12 @@ class GI_UMembership
     {
         //TODO Add Debug Mode pass by constructor
         //PROD Mode
-        //$this->domain_url = $_SERVER['HTTP_HOST'];
+        $this->domain_url = $_SERVER['HTTP_HOST'];
         $this->validator_url = "%s/validator-coici/?gims-membership-validator=%s";
         $this->qr_generator_url = "%s/wp-content/plugins/GI_MyMembershipStatus/lib/EndroidQRCode/getQRCode.php?data=%s";
                     
         //DEBUG Mode
-        $this->domain_url =  "http://localhost/B4ADemoSite";
+        //$this->domain_url =  "http://localhost/B4ADemoSite";
         //$this->validator_url = "%s/wp-admin/admin.php?page=gi2m-members?2sx=%s";
     }
     
@@ -118,8 +118,18 @@ class GI_UMembership
                         //Build Custom QR Image Name
                         $CustomQR_URL = sprintf(GI_PLUGIN_DIR_PATH.'image/resources/base/%sQR.png',$Prefix_IMG);
 
+                        
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                        curl_setopt($ch, CURLOPT_URL, $QR_ImageSource);
+                        $data = curl_exec($ch);
+                        curl_close($ch);
+                        
                         //Take the QRcode generator url and save as image in server
-                        file_put_contents($CustomQR_URL, file_get_contents($QR_ImageSource));
+                        file_put_contents($CustomQR_URL, $data);
+                        
+                        //Take the QRcode generator url and save as image in server
+                        //file_put_contents($CustomQR_URL, file_get_contents($QR_ImageSource));
 
                         $base_template = @imagecreatefrompng(GI_PLUGIN_DIR_PATH.'image/Carnet-Template50.png');
                         $customQR = @imagecreatefrompng($CustomQR_URL);
