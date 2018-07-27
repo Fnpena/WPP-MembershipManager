@@ -1,0 +1,132 @@
+jQuery(document).ready(function($)
+{
+	/*+++++++++++++++++++++++++++++++++++++++++++
+					Declare Modal
+	+++++++++++++++++++++++++++++++++++++++++++++*/
+	
+	$('#dialog-viewer').dialog({
+		autoOpen: false,
+		height:500,
+		width:650,
+		modal: true,
+		buttons:
+		{
+//			"Export to PDF": function()
+//			{
+//                var $divContent = $('#capture')[0]; 
+//				
+//				html2canvas($divContent).then(function (canvas) {
+//				var base64image = canvas.toDataURL("image/png");
+//				
+//                //Original Code for Testing
+//                $('#tab2').html("<img alt='view-result' id='my_viewer' />");
+//				$('#my_viewer').attr("src",base64image);
+//				$('#capture').hide(); 
+//                
+//                //var pdf = new jsPDF();
+//                //pdf.addImage(base64image, 'PNG', 0, 0);
+//                //pdf.save("download.pdf");
+//					
+//				});   
+//			},
+			"Cerrar": function()
+            {
+                $(this).dialog('close'); 
+            }
+		}
+	});
+    
+	/*+++++++++++++++++++++++++++++++++++++++++++
+	Name: ActionBtn Event
+	Description: This event raise when apply button
+	from bulk actions
+	+++++++++++++++++++++++++++++++++++++++++++++*/
+	
+	var $actionBtn = $('#doaction');
+	$actionBtn.on('click',function()
+	{
+		//This code extract all checked checkbox in the table
+		var $results_tx = $('.cbk_id:checked').map(function()
+		{
+			return $(this).val();
+		});
+     	
+		$.ajax
+		({
+			url: gims_testing.url,
+			method:'POST',
+			dataType:'json',
+			data:
+			{
+				action: 'gims_generateCard',
+				nonce: gims_testing.myvalidator,
+				requested_ids:$results_tx.get()
+			},
+			success: function(data)
+			{
+				$('#dialog-viewer').dialog('open');
+                $iframe_tag = "<iframe style='position:relative;right:157px;' src='"+data.response_data+"' width='600px' height='370px' />";
+				$('.dialog-viewer-content').html($iframe_tag);
+                //console.log(data.response_data);
+			}
+		});
+		return false;
+	});
+	
+	/*+++++++++++++++++++++++++++++++++++++++++++
+	Name: ActionBtn2 Event
+	Description: This event raise when apply button
+	from bulk actions. this event is unique for lower
+	action btn 2
+	+++++++++++++++++++++++++++++++++++++++++++++*/
+	
+	var $actionBtn2 = $('#doaction2');
+	$actionBtn2.on('click',function()
+	{
+		var $results_tx = $('.cbk_id:checked').map(function()
+		{
+			return $(this).val();
+		});
+		
+		$.ajax
+		({
+			url: gims_testing.url,
+			method:'POST',
+			dataType:'json',
+			data:
+			{
+				action: 'gims_generateCard',
+				nonce: gims_testing.myvalidator,
+				requested_ids:$results_tx.get()
+			},
+			success: function(data)
+			{
+				//$('#dialog-viewer').dialog('open');
+				//$('.dialog-viewer-content').html(data.response_data);
+                $('#dialog-viewer').dialog('open');
+                $iframe_tag = "<iframe style='position:relative;right:157px;' src='"+data.response_data+"' width='600px' height='370px' />";
+				$('.dialog-viewer-content').html($iframe_tag);
+			}
+		});
+		return false;
+	});
+	
+/*	function getCleanPath(url)
+	{
+		var local = /localhost/;
+		if(local.test(url))
+		{
+			var url_pathname = location.pathname,
+				indexPos = url_pathname.indexOf('wp-admin'),
+				url_pos  = url_pathname.indexOf(0,indexPos),
+				url_delete = location.protocol + location.host + url_pos;
+				
+			return url_pos + url.replace(url_delete,'');
+		}
+		else
+		{
+			var url_domain = location.protocol + '//' + location.hostname;
+			return url.replace(url_domain,'');
+		}
+	}*/
+});

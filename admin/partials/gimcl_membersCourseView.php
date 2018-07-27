@@ -20,21 +20,17 @@ class Members_ListTable extends WP_List_Table
 
 		global $wpdb;
 
-		$sql = "SELECT suitability_number,
- 					   firstname,
-					   lastname,		  
-					   email_address,
-					   primary_contact,
-					   sectional,
-					   member_status,
-					   initial_date,
-					   last_update,
-					   unique_guid 
-				  FROM {$wpdb->prefix}gi2m_members";
+		$sql = "SELECT  tb1.firstname
+	                   ,tb1.lastname
+	                   ,tb1.personal_id
+					   ,GROUP_CONCAT(tb2.aux_code) AS course_list
+				  FROM {$wpdb->prefix}gimcl_members tb1 JOIN {$wpdb->prefix}gimcl_member_education tb2 ON tb1.id = tb2.member_id ";
 
 		if ( isset( $_POST['s'] ) ) {
-			$sql .= " WHERE firstname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR lastname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR suitability_number LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
+			$sql .= " WHERE tb1.firstname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR tb1.lastname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR tb1.personal_id LIKE '%" . esc_sql( $_POST['s'] ). "%' OR tb2.aux_code LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
 		}
+        
+        $sql .= " GROUP BY tb1.firstname,tb1.lastname,tb1.personal_id";
 		
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
@@ -56,9 +52,10 @@ class Members_ListTable extends WP_List_Table
 	 * @return null|string
 	*/
 	public static function record_count() 
-	{
+	{//TODO: Agrega where clause
 		global $wpdb;
-		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}gi2m_members";
+		$sql = "SELECT COUNT(tb1.personal_id) FROM {$wpdb->prefix}gimcl_members tb1 JOIN {$wpdb->prefix}gimcl_member_education tb2 ON tb1.id = tb2.member_id ";
+        $sql .= " GROUP BY tb1.firstname,tb1.lastname,tb1.personal_id";
 		return $wpdb->get_var( $sql );
 	}
 
@@ -75,10 +72,9 @@ class Members_ListTable extends WP_List_Table
 	 */
 	public function get_sortable_columns() {
 		$sortable_columns = array(
-			'suitability_number' => array( 'suitability_number', true ),
+			'personal_id' => array( 'personal_id', true ),
 			'firstname' => array( 'firstname', true ),
-			'lastname' => array( 'lastname', false ),
-			'member_status' => array( 'city', false )
+			'lastname' => array( 'lastname', false )
 		);
 
 		return $sortable_columns;
@@ -93,15 +89,11 @@ class Members_ListTable extends WP_List_Table
 	{
 		switch( $column_name ) 
 		{ 
-			case 'suitability_number':
+			case 'personal_id':
 			case 'firstname':
 			case 'lastname':
-			case 'email_address':
-			case 'primary_contact':
-			case 'sectional':
-			case 'member_status':
-			case 'initial_date':
-			case 'last_update':
+			 return $item[ $column_name ];
+			case 'course_list':
 			  return $item[ $column_name ];
 			default:
 			  return print_r( $item, true ) ; //Troubleshooting Info
@@ -115,14 +107,10 @@ class Members_ListTable extends WP_List_Table
 	function get_columns()
 	{
 		$columns = array(
-		'suitability_number' => 'Idoneidad',
+		'personal_id' => 'Cedula',
 		'firstname'    => 'Nombre',
 		'lastname'    => 'Apellido',
-		'email_address'    => 'Correo',
-		'primary_contact'    => 'Contacto',
-		'sectional'    => 'Region',
-		'member_status'      => 'Estado',
-		'last_update'    => 'Ultima Actualizacion'
+		'course_list'    => 'Cursos'
 		);
 		return $columns;
 	}

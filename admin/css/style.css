@@ -1,0 +1,55 @@
+body
+{ 
+	font-size:12px;
+}
+
+.GCTemplate
+{
+	width:318px;
+	height:216px;
+	padding:15px;
+	border-radius:10px;
+	border: 1px solid black;
+	background: url('../../image/Carnet-Template50.png');
+	font-size: 12px;
+    font-family: monospace;
+}
+
+#QR_code
+{
+	left: 36px;
+    top: 92px;
+    position: relative;
+    border: solid 1px black;
+}
+
+.dialog-viewer-content
+{
+	padding: 0 26%;
+    width: 100%;
+}
+
+.center-member
+{
+	padding-top: 82px;
+    font-family: sans-serif;
+}
+
+.lbl-cname
+{
+	font-size: 11px;
+    position: relative;
+    padding-top: 10px;
+}
+
+.lbl-cpersonalid
+{
+    font-size: 11px;
+    padding-top: 10px;
+    position: relative;
+}
+
+#dialog-viewer
+{
+    width: 100%!important;
+}
