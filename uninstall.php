@@ -21,8 +21,13 @@ function gi2m_remove_variable()
 function gi2m_remove_database() 
 {
     global $wpdb;
+<<<<<<< HEAD
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}gimcl_member_education"); 
     $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}gimcl_members"); 
+=======
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}gi2m_member_education"); 
+    $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}gi2m_members"); 
+>>>>>>> 689ea104d6953f5d71e0847d10aeeb9911c81e9e
 }
 
 
