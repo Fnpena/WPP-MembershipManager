@@ -6,7 +6,7 @@ class GIMCL_Initialize
     protected $gimcl_admin;
     protected $gimcl_public;
 	
-	//protected $ajax_umembership;  
+	protected $crud_handler;  
     
     public function __construct() 
 	{
@@ -14,7 +14,7 @@ class GIMCL_Initialize
         $this->start();
 		//$this->set_language();
         $this->declare_admin_hooks();
-        //////$this->declare_public_hooks();      
+        $this->declare_public_hooks();      
     }
     
     public function start() 
@@ -26,13 +26,13 @@ class GIMCL_Initialize
         require_once GIMCL_PLUGIN_DIR_PATH . 'public/gimcl_init_public.php';
         
 		//require_once $this->plugin_dir_path . 'gi_i18n.php';  
-		//require_once $this->plugin_dir_path . 'gi_umembership.php';		
+		require_once GIMCL_PLUGIN_DIR_PATH . 'helpers/gimcl_crudmanager.php';		
         $this->loader = new GIMCL_Loader;
         
         $this->gimcl_admin = new GIMCL_InitAdmin($this->version);
-        //////$this->gimcl_public = new GIMCL_InitPublic($this->version);
+        $this->gimcl_public = new GIMCL_InitPublic($this->version);
         
-		//$this->ajax_umembership = new GI_UMembership;	
+		$this->crud_handler = new GIMCL_CRUDManager;	
     }
 	
 	 /**
@@ -53,19 +53,20 @@ class GIMCL_Initialize
     public function declare_admin_hooks() 
 	{    
         // Cargando los estilos y scripts del admin
-        $this->loader->add_action( 'gimcl_admin_enqueue_scripts', $this->gimcl_admin, 'enqueue_styles' );
-        $this->loader->add_action( 'gimcl_admin_enqueue_scripts', $this->gimcl_admin, 'enqueue_scripts' );
+        $this->loader->add_action( 'admin_enqueue_scripts', $this->gimcl_admin, 'enqueue_styles' );
+        $this->loader->add_action( 'admin_enqueue_scripts', $this->gimcl_admin, 'enqueue_scripts' );
 		
 		$this->loader->add_action( 'admin_menu', $this->gimcl_admin, 'add_menu' );
-		//$this->loader->add_action( 'wp_ajax_gims_generateCard', $this->ajax_umembership, 'generate' );
+        $this->loader->add_action( 'wp_ajax_gimcl_AsyncHandler', $this->crud_handler, 'SaveRequest' );
     }
     
     public function declare_public_hooks() 
 	{    
         // Cargando los estilos y scripts del public side
-        $this->loader->add_action( 'gimcl_public_enqueue_scripts', $this->gimcl_public, 'enqueue_styles' );
-        $this->loader->add_action( 'gimcl_public_enqueue_scripts', $this->gimcl_public, 'enqueue_scripts' );
-        $this->loader->add_shortcode( 'gimcl-members-view', $this->gimcl_public, 'custom_shortcode' );
+        $this->loader->add_action( 'wp_enqueue_scripts', $this->gimcl_public, 'enqueue_styles' );
+        $this->loader->add_action( 'wp_enqueue_scripts', $this->gimcl_public, 'enqueue_scripts' );
+        
+        $this->loader->add_shortcode( 'gimcl-search-view', $this->gimcl_public, 'custom_shortcode' );
     }
     
     public function run() 

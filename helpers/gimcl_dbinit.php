@@ -57,8 +57,9 @@ class GIMCL_DBInit
 				description NVARCHAR(100) NOT NULL,
 				aux_code NVARCHAR(30),
 				institution NVARCHAR(100),
-				year NVARCHAR(9) NOT NULL,
-				status CHAR(1) NOT NULL,
+				year NVARCHAR(9),
+                duration NVARCHAR(3),
+				status CHAR(1),
 				UNIQUE KEY id (id))$charset_collate;";
 				
 			$result = maybe_create_table(GIMCL_TBL_MEMBER_EDU, $sql);

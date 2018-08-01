@@ -1,35 +1,76 @@
 <?php 
 
-//Check if class WP_List_Table exist 
-if( ! class_exists( 'WP_List_Table' ) ) 
+class Members_ListTable //extends WP_List_Table 
 {
-    require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
-}
-
-class Members_ListTable extends WP_List_Table 
-{
+    protected $items;
+    
+    protected $_column_headers;
+    
+    /**
+    * domain url value
+    *
+    * @since    1.0.0
+    * @access   protected
+    */
+    protected $domain_url;
+    
+    /**
+    * URI url value
+    *
+    * @since    1.0.0
+    * @access   protected
+    */
+    protected $uri_url;
+    
+    /**
+    * request page value
+    *
+    * @since    1.0.0
+    * @access   protected
+    */
+    protected $current_page;
+    
+    
+    public function __construct()
+    {
+        $this->domain_url = $_SERVER['HTTP_HOST'];
+        $this->uri_url = explode('?',$_SERVER['REQUEST_URI'])[0];               
+        
+        /*+++++++++++++++++++++++++++++++++++++++++++++++++++++
+                        Extract POST Parameters
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+        
+        /*if(isset($_GET['page']))
+        {
+            $this->$req_page = esc_html($_GET['page']);
+        }*/
+        
+        /*+++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+    }
+    
 	/**
-	 * Retrieve result course to one personal_id or aux_code from the database
+	 * Retrieve members data from the database
 	 *
 	 * @param int $per_page
 	 * @param int $page_number
 	 *
 	 * @return mixed
 	 */
-	public static function get_results( $per_page = 2, $page_number = 1 ) {
+	public static function get_members( $per_page = 2, $page_number = 1 ) {
 
 		global $wpdb;
 
-		$sql = "SELECT m.personal_id,
- 					   m.firstname,
-					   m.lastname,		  
-					   edu.aux_code,
-                       edu.description
-				  FROM {$wpdb->prefix}gi2m_members  m  INNER JOIN {$wpdb->prefix}gi2m_member_education edu ON m.id = edu.member_id ";
+		$sql = "SELECT  tb1.firstname
+	                   ,tb1.lastname
+	                   ,tb1.personal_id
+					   ,GROUP_CONCAT(tb2.aux_code) AS course_list
+				  FROM {$wpdb->prefix}gimcl_members tb1 JOIN {$wpdb->prefix}gimcl_member_education tb2 ON tb1.id = tb2.member_id ";
 
 		if ( isset( $_POST['s'] ) ) {
-			$sql .= " WHERE m.personal_id LIKE '%" . esc_sql( $_POST['s'] ). "%' OR edu.aux_code LIKE '%" . esc_sql( $_POST['s'] ). "%'";
+			$sql .= " WHERE tb1.firstname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR tb1.lastname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR tb1.personal_id LIKE '%" . esc_sql( $_POST['s'] ). "%' OR tb2.aux_code LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
 		}
+        
+        $sql .= " GROUP BY tb1.firstname,tb1.lastname,tb1.personal_id";
 		
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
@@ -51,9 +92,10 @@ class Members_ListTable extends WP_List_Table
 	 * @return null|string
 	*/
 	public static function record_count() 
-	{
+	{//TODO: Agrega where clause
 		global $wpdb;
-		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}gi2m_members";
+		$sql = "SELECT COUNT(tb1.personal_id) FROM {$wpdb->prefix}gimcl_members tb1 JOIN {$wpdb->prefix}gimcl_member_education tb2 ON tb1.id = tb2.member_id ";
+        $sql .= " GROUP BY tb1.firstname,tb1.lastname,tb1.personal_id";
 		return $wpdb->get_var( $sql );
 	}
 
@@ -72,8 +114,7 @@ class Members_ListTable extends WP_List_Table
 		$sortable_columns = array(
 			'personal_id' => array( 'personal_id', true ),
 			'firstname' => array( 'firstname', true ),
-			'lastname' => array( 'lastname', false ),
-			'aux_code' => array( 'aux_code', false )
+			'lastname' => array( 'lastname', false )
 		);
 
 		return $sortable_columns;
@@ -88,11 +129,11 @@ class Members_ListTable extends WP_List_Table
 	{
 		switch( $column_name ) 
 		{ 
-            case 'personal_id':
+			case 'personal_id':
 			case 'firstname':
 			case 'lastname':
-            case 'aux_code':
-            case 'description':
+			 return $item[ $column_name ];
+			case 'course_list':
 			  return $item[ $column_name ];
 			default:
 			  return print_r( $item, true ) ; //Troubleshooting Info
@@ -109,10 +150,23 @@ class Members_ListTable extends WP_List_Table
 		'personal_id' => 'Cedula',
 		'firstname'    => 'Nombre',
 		'lastname'    => 'Apellido',
-		'aux_code'    => 'Codigo',
-		'description'    => 'Detalle de Curso');
+		'course_list'    => 'Cursos'
+		);
 		return $columns;
 	}
+    
+    /*
+      Funtion: get_columns
+      Description: Return current page number in the table view
+    */
+    function get_pagenum()
+    {
+        if(isset($_GET['gimcl-search-view']))
+        {
+            return esc_html($_GET['gimcl-search-view']);
+        }
+        return 1;
+    }
 	
 	/**
 	 * Handles data query and filter, sorting, and pagination.
@@ -124,26 +178,118 @@ class Members_ListTable extends WP_List_Table
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array($columns, $hidden, $sortable);
 		
-		$per_page     = $this->get_items_per_page( 'results_per_page', 2 );
-		$current_page = $this->get_pagenum();
+		$per_page     = 2;//$this->get_items_per_page( 'members_per_page', 2 );
+		$this->current_page = $this->get_pagenum();
 		$total_items  = self::record_count();
 
-		$this->set_pagination_args( [ 'total_items' => $total_items, 'per_page'    => $per_page ] );
-
-		$this->items = self::get_results( $per_page, $current_page );
+		//$this->set_pagination_args( [ 'total_items' => $total_items, 'per_page'    => $per_page ] );
+        //echo 'current_page:'.$this->current_page;
+		$this->items = self::get_members( $per_page, $this->current_page );
 	}
+    
+    public function search_box($text_button)
+    {
+        echo "<div class='row col-sm-12'><input type='text' class='col-sm-8' id='search-textbox'><a id='btnSearchBox' class='btnSearch waves-effect waves-light btn'>$text_button</a></div>";
+    }
+    
+    public function display()
+    {
+        $total_items  = self::record_count();
+        $page_num = round($total_items/2);
+        //$current_page = 1;
+        
+        //$full_domain = sprintf("%s/%s",$this->domain_url,$this->uri_url);
+        //echo $this->$req_page;
+        
+        $pagination_section = '';
+        
+        $pagination_section .= "<div class='row col-sm-12 tablenav-pages'>";
+        //$pagination_section .= "<span class='displaying-num'>$total_items items</span>";
+        //$pagination_section .= "<span class='pagination-links'>";
+        
+        //this logic control if backward button is enable or disable
+        if($this->current_page == 1)
+        {
+            $pagination_section .= "<span class='tablenav-pages-navspan tablenav-first' aria-hidden='true'><i class='material-icons'>first_page</i></span>";
+	        $pagination_section .= "<span class='tablenav-pages-navspan' aria-hidden='true'><i class='material-icons'>chevron_left</i></span>";
+        }
+        else
+        {
+            //echo $this->current_page;
+            $fullbackward_url = sprintf('?gimcl-search-view=%s','1');
+            $backward_url = sprintf('?gimcl-search-view=%s',$this->current_page-1);
+            
+            $pagination_section .= sprintf("<a class='tablenav-first first-page' href='%s'>
+            <span aria-hidden='true'><i class='material-icons'>first_page</i></span>
+            </a>",$fullbackward_url);
+            $pagination_section .= sprintf("<a class='prev-page' href='%s'>
+            <span aria-hidden='true'><i class='material-icons'>chevron_left</i></span>
+            </a>",$backward_url);
+        }
+        
+        
+        $pagination_section .= "<span class='paging-index'>";
+		$pagination_section .= "<span class='current-page' id='current-page-selector' name='paged'>$this->current_page</span>";
+		$pagination_section .= "<span class='tablenav-paging-text'> of <span class='total-pages'>$page_num</span></span>
+	    </span>";
+        
+        //this logic control if forward button is enable or disable
+        if($this->current_page < $page_num)
+        {
+            $fullforward_url = sprintf('?gimcl-search-view=%s',$page_num);
+            $forward_url = sprintf('?gimcl-search-view=%d',$this->current_page+1);
+            
+            $pagination_section .= sprintf("<a class='next-page' href='%s'>
+            <span aria-hidden='true'><i class='material-icons'>chevron_right</i></span>
+            </a>",$forward_url);
+            $pagination_section .= sprintf("<a class='last-page' href='%s'>
+            <span aria-hidden='true'><i class='material-icons'>last_page</i></span>
+            </a>",$fullforward_url);
+        }
+        else
+        {
+            $pagination_section .= "<span class='tablenav-pages-navspan' aria-hidden='true'><i class='material-icons'>chevron_right</i></span>";
+	        $pagination_section .= "<span class='tablenav-pages-navspan' aria-hidden='true'><i class='material-icons'>last_page</i></span>";   
+        }
+        
+        
+        $pagination_section .= "</div>";
+        
+        echo $pagination_section;
+        
+        echo "<table class='table table-centered table-striped table-bordered'>";
+
+        echo "<thead class='thead-dark'>
+        <tr>
+        <th scope='col'>Cedula</th>
+        <th scope='col'>Nombre</th>
+        <th scope='col'>Apellido</th>
+        <th scope='col'>Cursos</th>
+        </tr>
+        </thead>";
+        
+        foreach ( $this->items as $item )
+        {
+            extract($item,EXTR_OVERWRITE);
+            echo '<tr><td>'.$personal_id.'</td>';
+            echo '<td>'.$firstname.'</td>';
+            echo '<td>'.$lastname.'</td>';
+            echo '<td>'.$course_list.'</td></tr>';
+        }
+        echo '</table>';
+        echo $pagination_section;
+    }
 }
 
-$myMembersListTable = new Members_ListTable();
+$myExternalView = new Members_ListTable();
 ?>
-<h1><?php echo get_admin_page_title(); ?></h1>
 <div class="wrap">
-	<h2><?php echo get_admin_page_title(); ?></h2>
+	<h2>Directorio COICI</h2>
 	<form method="post">
 	<?php
-			$myMembersListTable->prepare_items();
-			$myMembersListTable->search_box( 'Buscar', 'search-box-id' ); 
-			$myMembersListTable->display(); 
+			$myExternalView->prepare_items();
+			$myExternalView->search_box( 'Buscar'); 
+			$myExternalView->display(); 
 	?>
 	</form>
 </div>

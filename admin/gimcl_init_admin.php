@@ -26,9 +26,11 @@ class GIMCL_InitAdmin
             return;
         }*/
         
-		wp_enqueue_style( 'bootstrap_min_css', $this->plugin_dir_url . 'css/bootstrap.min.css', [], $this->version, 'all' );
-		wp_enqueue_style( 'jquery_ui_css', $this->plugin_dir_url . 'css/jquery-ui.css', [], $this->version, 'all' );
-        wp_enqueue_style( 'gimcl_admin_style', $this->plugin_dir_url . 'css/style.css', [], $this->version, 'all' );   
+		wp_enqueue_style( 'bootstrap_min_css', GIMCL_PLUGIN_DIR_URL . 'admin/css/bootstrap.min.css', [], $this->version, 'all' );
+		wp_enqueue_style( 'jquery_ui_css', GIMCL_PLUGIN_DIR_URL . 'admin/css/jquery-ui.css', [], $this->version, 'all' );
+        wp_enqueue_style( 'gimcl_material_icon_admin_css', 'https://fonts.googleapis.com/icon?family=Material+Icons' , [], '', 'all' );
+        
+        wp_enqueue_style( 'gimcl_admin_style', GIMCL_PLUGIN_DIR_URL . 'admin/css/style.css', [], $this->version, 'all' );   
     }
     
     public function enqueue_scripts( $hook ) {
@@ -36,11 +38,10 @@ class GIMCL_InitAdmin
         /*if( $hook != 'toplevel_page_gi2m-members' ) {
             return;
         }*/
+		wp_enqueue_script( 'bootstrap_min_js', GIMCL_PLUGIN_DIR_URL . 'admin/js/bootstrap.min.js', ['jquery'], $this->version, true );
+		wp_enqueue_script( 'jquery_ui_js', GIMCL_PLUGIN_DIR_URL . 'admin/js/jquery-ui.js', ['jquery'], $this->version, true );
         
-		wp_enqueue_script( 'bootstrap_min_js', $this->plugin_dir_url . 'js/bootstrap.min.js', ['jquery'], $this->version, true );
-		wp_enqueue_script( 'jquery_ui_js', $this->plugin_dir_url . 'js/jquery-ui.js', ['jquery'], $this->version, true );
-		
-        wp_enqueue_script( 'gimcl_admin_script', $this->plugin_dir_url . 'js/script.js', ['jquery'], $this->version, true );
+        wp_enqueue_script( 'gimcl_admin_script', GIMCL_PLUGIN_DIR_URL . 'admin/js/script.js', ['jquery'], $this->version, true );
 		
 		wp_localize_script('gimcl_admin_script',
 						   'gimcl_ajaxform',

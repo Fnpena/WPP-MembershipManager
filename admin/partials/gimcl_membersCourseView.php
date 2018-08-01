@@ -94,7 +94,23 @@ class Members_ListTable extends WP_List_Table
 			case 'lastname':
 			 return $item[ $column_name ];
 			case 'course_list':
-			  return $item[ $column_name ];
+                $raw_data = $item[ $column_name ];
+                if(strpos($raw_data, ',') !== false)
+                {
+                    $str_bullet = '';
+                    $arr_data = explode(",", $raw_data);
+                    
+                    for($rw = 0; $rw < count($arr_data); $rw++)
+                    {
+                            $str_bullet .= '<li>'.$arr_data[$rw].'<li>';
+                    }
+                    $str_bullet = '<ul>'.$str_bullet.'<ul>';
+                    return $str_bullet;
+                }
+                else
+                {
+			     return $item[ $column_name ];
+                }
 			default:
 			  return print_r( $item, true ) ; //Troubleshooting Info
 		}
@@ -137,8 +153,74 @@ class Members_ListTable extends WP_List_Table
 
 $myMembersListTable = new Members_ListTable();
 ?>
+<!-- Modal Structure -->
+<div id="NewStudentModal">
+<div class="modal-header">
+    <h4 class="modal-title">Agregar Estudiante</h4>
+</div>
+<div class="modal-body">
+  <form method="post">
+        
+      <div class="row">
+            <div class="form-group col-sm-6">
+            <input type="text" id="firstname-input" class="form-control firstname">
+            <label for="firstname-input">Nombre</label>
+            </div>
+            <div class="form-group col-sm-6">
+            <input type="text" id="lastname-input" class="form-control lastname">
+            <label for="lastname-input">Apellido</label>
+            </div>
+      </div>
+
+      <div class="row">
+            <div class="form-group  col-sm-6">
+            <input type="text" id="personalid-input" class="form-control personalid">
+            <label for="personalid-input">Cedula</label>
+            </div>
+      </div>
+       
+      <div class="row">
+            <div class="form-group col-sm-3">
+            <input type="text" id="course-code-input" class="form-control">
+            <label for="course-code-input">Codigo</label>
+            </div>
+            <div class="form-group col-sm-5">
+            <input type="text" id="course-description-input" class="form-control">
+            <label for="course-description-input">Descripcion</label>
+            </div>
+            <div class="form-group col-sm-2">
+            <input type="text" id="course-duration-input" class="form-control">
+            <label for="course-duration-input">No. Horas</label>
+            </div>
+            <div class="col-sm-2">
+            <a class="btnAddNewRow btn btn-primary">
+                <i class="material-icons">add</i>
+            </a>    
+            </div>
+      </div>
+      
+      <div class="row">
+            <input type="text" id="hf_courses"/>
+            <span>[table]</span>
+      </div>
+        
+  </form>
+</div>
+</div>
+
 <div class="wrap">
-	<h2><?php echo get_admin_page_title(); ?></h2>
+	<div class="row">
+        <div class="col s12">
+            <h5><?php echo esc_html(get_admin_page_title()); ?></h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <a class="btnAddRegistry btn btn-primary"><i class="material-icons">add</i>
+            <span>Nuevo Registro</span>
+            </a>
+        </div>
+    </div>
 	<form method="post">
 	<?php
 			$myMembersListTable->prepare_items();
