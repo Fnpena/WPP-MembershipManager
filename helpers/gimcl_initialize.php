@@ -58,6 +58,8 @@ class GIMCL_Initialize
 		
 		$this->loader->add_action( 'admin_menu', $this->gimcl_admin, 'add_menu' );
         $this->loader->add_action( 'wp_ajax_gimcl_AsyncHandler', $this->crud_handler, 'SaveRequest' );
+        
+        $this->loader->add_action( 'wp_ajax_gimcl_GetStudentProfile', $this->crud_handler, 'GetStudentProfile' );
     }
     
     public function declare_public_hooks() 

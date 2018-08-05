@@ -60,6 +60,7 @@ class GIMCL_DBInit
 				year NVARCHAR(9),
                 duration NVARCHAR(3),
 				status CHAR(1),
+                register_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				UNIQUE KEY id (id))$charset_collate;";
 				
 			$result = maybe_create_table(GIMCL_TBL_MEMBER_EDU, $sql);

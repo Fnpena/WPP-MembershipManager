@@ -16,11 +16,12 @@ class Members_ListTable extends WP_List_Table
 	 *
 	 * @return mixed
 	 */
-	public static function get_members( $per_page = 2, $page_number = 1 ) {
+	public static function get_members( $per_page = 50, $page_number = 1 ) {
 
 		global $wpdb;
 
-		$sql = "SELECT  tb1.firstname
+		$sql = "SELECT  tb1.id
+                       ,tb1.firstname
 	                   ,tb1.lastname
 	                   ,tb1.personal_id
 					   ,GROUP_CONCAT(tb2.aux_code) AS course_list
@@ -79,6 +80,16 @@ class Members_ListTable extends WP_List_Table
 
 		return $sortable_columns;
 	}
+    
+    /*
+	Funtion: column_personal_id
+	Description: display value for every column without a special function defined
+	*/
+	function column_personal_id( $item ) 
+    {
+        $actions = array('editar' => sprintf("<a href='#' class='btnEditStudent' item-code='%s'>Editar</a>",$item['id']));
+        return sprintf('%1$s %2$s', $item['personal_id'], $this->row_actions($actions) );
+    }
 
 	
 	/*
@@ -89,7 +100,7 @@ class Members_ListTable extends WP_List_Table
 	{
 		switch( $column_name ) 
 		{ 
-			case 'personal_id':
+			//case 'personal_id':
 			case 'firstname':
 			case 'lastname':
 			 return $item[ $column_name ];
@@ -102,9 +113,10 @@ class Members_ListTable extends WP_List_Table
                     
                     for($rw = 0; $rw < count($arr_data); $rw++)
                     {
-                            $str_bullet .= '<li>'.$arr_data[$rw].'<li>';
+                            $str_bullet .= '<li>'.$arr_data[$rw].'</li>';
                     }
-                    $str_bullet = '<ul>'.$str_bullet.'<ul>';
+                    
+                    $str_bullet = "<a href='#' class='btnDisplay' item='AX-".$item['id']."'>mostrar</a><div class='div-hidden AX-".$item['id']."'><ul>$str_bullet<ul></div>";
                     return $str_bullet;
                 }
                 else
@@ -141,7 +153,7 @@ class Members_ListTable extends WP_List_Table
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array($columns, $hidden, $sortable);
 		
-		$per_page     = $this->get_items_per_page( 'members_per_page', 2 );
+		$per_page     = $this->get_items_per_page( 'members_per_page', 50 );
 		$current_page = $this->get_pagenum();
 		$total_items  = self::record_count();
 
@@ -153,14 +165,40 @@ class Members_ListTable extends WP_List_Table
 
 $myMembersListTable = new Members_ListTable();
 ?>
-<!-- Modal Structure -->
+<div class="wrap">
+	<div class="row">
+        <div class="col s12">
+            <h5><?php echo esc_html(get_admin_page_title()); ?></h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <a class="btnAddRegistry btn btn-primary"><i class="material-icons">add</i>
+            <span>Nuevo Registro</span>
+            </a>
+        </div>
+    </div>
+	<form method="post">
+	<?php
+			$myMembersListTable->prepare_items();
+			$myMembersListTable->search_box( 'Buscar', 'search-box-id' ); 
+			$myMembersListTable->display(); 
+	?>
+	</form>
+</div>
+<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            Modal Structure 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 <div id="NewStudentModal">
 <div class="modal-header">
     <h4 class="modal-title">Agregar Estudiante</h4>
 </div>
 <div class="modal-body">
   <form method="post">
-        
+        <input type="hidden" id="hfmodal-mode" value="X">
+        <input type="hidden" id="hfmodal-index">
+        <input type="hidden" id="hfcurrent_user">
+      
       <div class="row">
             <div class="form-group col-sm-6">
             <input type="text" id="firstname-input" class="form-control firstname">
@@ -200,32 +238,11 @@ $myMembersListTable = new Members_ListTable();
       </div>
       
       <div class="row">
+          <div class="col-sm-12 divPanel">
+          </div>
             <input type="text" id="hf_courses"/>
-            <span>[table]</span>
       </div>
         
   </form>
 </div>
-</div>
-
-<div class="wrap">
-	<div class="row">
-        <div class="col s12">
-            <h5><?php echo esc_html(get_admin_page_title()); ?></h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <a class="btnAddRegistry btn btn-primary"><i class="material-icons">add</i>
-            <span>Nuevo Registro</span>
-            </a>
-        </div>
-    </div>
-	<form method="post">
-	<?php
-			$myMembersListTable->prepare_items();
-			$myMembersListTable->search_box( 'Buscar', 'search-box-id' ); 
-			$myMembersListTable->display(); 
-	?>
-	</form>
 </div>

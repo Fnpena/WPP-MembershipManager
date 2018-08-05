@@ -35,17 +35,6 @@ class Members_ListTable //extends WP_List_Table
     {
         $this->domain_url = $_SERVER['HTTP_HOST'];
         $this->uri_url = explode('?',$_SERVER['REQUEST_URI'])[0];               
-        
-        /*+++++++++++++++++++++++++++++++++++++++++++++++++++++
-                        Extract POST Parameters
-        +++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-        
-        /*if(isset($_GET['page']))
-        {
-            $this->$req_page = esc_html($_GET['page']);
-        }*/
-        
-        /*+++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     }
     
 	/**
@@ -56,8 +45,8 @@ class Members_ListTable //extends WP_List_Table
 	 *
 	 * @return mixed
 	 */
-	public static function get_members( $per_page = 2, $page_number = 1 ) {
-
+	public static function get_members( $per_page = 2, $page_number = 1 ) 
+    {
 		global $wpdb;
 
 		$sql = "SELECT  tb1.firstname
@@ -66,8 +55,9 @@ class Members_ListTable //extends WP_List_Table
 					   ,GROUP_CONCAT(tb2.aux_code) AS course_list
 				  FROM {$wpdb->prefix}gimcl_members tb1 JOIN {$wpdb->prefix}gimcl_member_education tb2 ON tb1.id = tb2.member_id ";
 
-		if ( isset( $_POST['s'] ) ) {
-			$sql .= " WHERE tb1.firstname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR tb1.lastname LIKE '%" . esc_sql( $_POST['s'] ). "%' OR tb1.personal_id LIKE '%" . esc_sql( $_POST['s'] ). "%' OR tb2.aux_code LIKE '%" . esc_sql( $_POST['s'] ). "%' ";
+		if ( isset( $_POST['search-textbox'] ) ) 
+        {
+			$sql .= " WHERE tb1.firstname LIKE '%" . esc_sql( $_POST['search-textbox'] ). "%' OR tb1.lastname LIKE '%" . esc_sql( $_POST['search-textbox'] ). "%' OR tb1.personal_id LIKE '%" . esc_sql( $_POST['search-textbox'] ). "%' OR tb2.aux_code LIKE '%" . esc_sql( $_POST['search-textbox'] ). "%' ";
 		}
         
         $sql .= " GROUP BY tb1.firstname,tb1.lastname,tb1.personal_id";
@@ -163,7 +153,10 @@ class Members_ListTable //extends WP_List_Table
     {
         if(isset($_GET['gimcl-search-view']))
         {
-            return esc_html($_GET['gimcl-search-view']);
+            $sel_page = esc_sql($_GET['gimcl-search-view']);
+            if(is_numeric($sel_page))
+                return $sel_page;
+            return 1;
         }
         return 1;
     }
@@ -189,7 +182,8 @@ class Members_ListTable //extends WP_List_Table
     
     public function search_box($text_button)
     {
-        echo "<div class='row col-sm-12'><input type='text' class='col-sm-8' id='search-textbox'><a id='btnSearchBox' class='btnSearch waves-effect waves-light btn'>$text_button</a></div>";
+        $full_domain = sprintf("%s/%s",$this->domain_url,$this->uri_url);
+        echo "<div class='row col-sm-12'><input type='text' class='searchbox-input col-sm-6' id='search-textbox' name='search-textbox'><input type='submit' id='btnsearch' class='btnSearchBox waves-effect waves-light btn' name='$text_button' /></div>";
     }
     
     public function display()
@@ -285,7 +279,7 @@ $myExternalView = new Members_ListTable();
 ?>
 <div class="wrap">
 	<h2>Directorio COICI</h2>
-	<form method="post">
+	<form id="form_search" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>" method="post">
 	<?php
 			$myExternalView->prepare_items();
 			$myExternalView->search_box( 'Buscar'); 
